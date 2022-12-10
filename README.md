@@ -184,4 +184,4 @@ or
 
 <h1>Credits</h1>
 
-- This repository partially uses <a href="https://github.com/chill-music">Shehab</a>,
+- This repository partially uses <a href="https://github.com/chill-music">Hurricane</a>,

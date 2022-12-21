@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Tác giả bản vá:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "Bản dịch của:"
     TranslationBy2  = "@CDzungx"
     Incorrect       = "Ối, sai giá trị rồi,"

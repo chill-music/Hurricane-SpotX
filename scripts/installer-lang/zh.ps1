@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "补丁作者:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "翻译作者:"
     TranslationBy2  = "@lumineyuri"
     Incorrect       = "糟糕,不正确的参数,"

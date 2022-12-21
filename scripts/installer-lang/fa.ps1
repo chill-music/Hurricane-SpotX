@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "نویسنده پچ:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "ترجمه شده توسط:"
     TranslationBy2  = "@Houshmand_am"
     Incorrect       = "اوه، یک مقدار نادرست"

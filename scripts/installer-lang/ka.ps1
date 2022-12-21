@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "პაჩის ავტორი:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "თარგმანის ავტორი:"
     TranslationBy2  = "@Naviamold1"
     Incorrect       = "უპს, არასწორი შენატანი,"

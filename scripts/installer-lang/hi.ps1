@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "पैच लेखक:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "अनुवाद लेखक:"
     TranslationBy2  = "@tdivyajyotis"
     Incorrect       = "ओह,  एक गलत मान,"

@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Patch szerzője:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "Fordítás szerzője:"
     TranslationBy2  = "@Wex02"
     Incorrect       = "Hoppá, helytelen érték,"

@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Yama yapımcısı:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "Tercüman:"
     TranslationBy2  = "@metezd"
     Incorrect       = "Eyvah, yanlış bir değer,"

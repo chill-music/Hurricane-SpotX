@@ -1,11 +1,11 @@
   <p align="center">
-  <a href="https://github.com/chill-music/Hurricane-SpotX/releases"><img src="https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/logo-win1.png" />
+  <a href="https://github.com/chill-music/Hurricane-SpotX/releases"><img src="https://raw.githubusercontent.com/SpotX-CLI/SpotX-commons/main/.github/Pic/Logo/logo-win.png" />
 </p>
 
 <p align="center">        
-      <a href=""><img src="https://raw.githubusercontent.com/SpotX-CLI/SpotX-commons/main/.github/Pic/Shields/tg.svg"></a>
-      <a href=""><img src="https://discord.com/api/guilds/807273906872123412/widget.png"></a>
-      <a href=""><img src="https://raw.githubusercontent.com/SpotX-CLI/SpotX-commons/main/.github/Pic/Shields/faq.svg"></a>
+      <a href="https://t.me/spotify_windows_mod"><img src="https://raw.githubusercontent.com/SpotX-CLI/SpotX-commons/main/.github/Pic/Shields/tg.svg"></a>
+      <a href="https://discord.gg/p43cusgUPm"><img src="https://discord.com/api/guilds/807273906872123412/widget.png"></a>
+      <a href="https://telegra.ph/SpotX-FAQ-09-19"><img src="https://raw.githubusercontent.com/SpotX-CLI/SpotX-commons/main/.github/Pic/Shields/faq.svg"></a>
       </p>
 
    <h2> <div align="center"><b> Modified Spotify Client for Windows </b></div> </h2>
@@ -13,7 +13,7 @@
 <h1>System requirements</h1>
 
 - <strong>OS: Windows 7-11</strong>
-- <strong>Spotify: latest official [versions](https://docs.google.com/spreadsheets/d/15jjY_pcW51uYOzZlCaRw7SRb1g1nkLdkTp2xZYTx1tw/edit?usp=sharing)</strong>
+- <strong>Spotify: latest official [versions](https://cutt.ly/8EH6NuH)</strong>
 - <strong>For Windows Desktop only (Microsoft store version is not suitable).</strong>
 - <strong>PowerShell: 3 or higher</strong>
 
@@ -184,4 +184,4 @@ or
 
 <h1>Credits</h1>
 
-- This repository partially uses <a href="https://github.com/chill-music">Hurricane</a>,
+- This repository partially uses <a href="https://github.com/mrpond/BlockTheSpot">BlockTheSpot</a>, and also some tricks were taken from <a href="https://github.com/khanhas/spicetify-cli">spicetify-cli</a>, many thanks to the contributors

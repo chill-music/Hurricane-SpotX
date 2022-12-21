@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Penulis tambalan:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "Penulis terjemahan:"
     TranslationBy2  = "@aliazhar-id"
     Incorrect       = "Ups, nilai yang salah,"

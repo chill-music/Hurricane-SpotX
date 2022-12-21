@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Автор патча:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     Incorrect       = "Ой, некорректное значение,"
     Incorrect2      = "повторите ввод через"
     Download        = "Ошибка загрузки"

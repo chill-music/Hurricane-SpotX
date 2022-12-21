@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Autorul patchului:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "Autorul traducerii:"
     TranslationBy2  = "@scr3ppie"
     Incorrect       = "Ups, o valoare incorectă,"

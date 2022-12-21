@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "Автор патчу:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "Автор перекладу:"
     TranslationBy2  = "@va1dee"
     Incorrect       = "Упс, некоректне значення,"

@@ -1,6 +1,6 @@
 [PSCustomObject]@{
     Author          = "패치 제작자:"
-    Author2         = "@Hurricane"
+    Author2         = "@Shehab"
     TranslationBy   = "번역가:"
     TranslationBy2  = "@jinoo2005609 "
     Incorrect       = "이런, 잘못된 값이네요,"

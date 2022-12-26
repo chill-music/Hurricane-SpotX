@@ -263,7 +263,9 @@ if ($langCode -eq 'ru') {
 }
 
 Write-Host ($lang).Welcome
+Write-Host ""
 Write-Host ($lang).Welcome2
+Write-Host ""
 
 # Sending a statistical web query to cutt.ly
 $ErrorActionPreference = 'SilentlyContinue'

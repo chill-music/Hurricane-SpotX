@@ -1,8 +1,12 @@
 [PSCustomObject]@{
     Welcome         = "
-╔══════════════════════════════╗
-║ Welcome to SpotX for Windows ║
-╚══════════════════════════════╝"
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "
+╔════════════════════════════════════════╗
+║         Patch author: @Shehab          ║
+╚════════════════════════════════════════╝"
     Incorrect       = "Hoppá, helytelen érték,"
     Incorrect2      = "Próbáld újra "
     Download        = "Letöltési hiba"

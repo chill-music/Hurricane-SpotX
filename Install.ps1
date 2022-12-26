@@ -262,8 +262,8 @@ if ($langCode -eq 'ru') {
     $webjsonru = (Invoke-WebRequest -UseBasicParsing -Uri $urlru).Content | ConvertFrom-Json
 }
 
-Write-Host ($lang).Welcome
-Write-Host ($lang).Welcome2
+Write-Host ($lang).Welcome`n -ForegroundColor Green
+Write-Host ($lang).Welcome2`n -ForegroundColor Red
 
 # Sending a statistical web query to cutt.ly
 $ErrorActionPreference = 'SilentlyContinue'

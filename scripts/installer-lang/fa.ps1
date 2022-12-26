@@ -1,8 +1,8 @@
 [PSCustomObject]@{
-    Welcome         = "
-╔══════════════════════════════╗
-║ Welcome to SpotX for Windows ║
-╚══════════════════════════════╝"
+    Author          = "نویسنده پچ:"
+    Author2         = "@Shehab"
+    TranslationBy   = "ترجمه شده توسط:"
+    TranslationBy2  = "@Houshmand_am"
     Incorrect       = "اوه، یک مقدار نادرست"
     Incorrect2      = "دوباره وارد شوید "
     Download        = "خطا در دانلود"

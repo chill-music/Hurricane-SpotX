@@ -1,8 +1,8 @@
 [PSCustomObject]@{
-    Welcome         = "
-╔══════════════════════════════╗
-║ Welcome to SpotX for Windows ║
-╚══════════════════════════════╝"
+    Author          = "补丁作者:"
+    Author2         = "@Shehab"
+    TranslationBy   = "翻译作者:"
+    TranslationBy2  = "@lumineyuri"
     Incorrect       = "糟糕,不正确的参数,"
     Incorrect2      = "请重新输入 "
     Download        = "下载错误"

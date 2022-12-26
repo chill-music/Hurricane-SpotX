@@ -117,119 +117,107 @@ function Format-LanguageCode {
         [string]$LanguageCode
     )
     
-    
-    $supportLanguages = @(
-        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv'
-    )
-    
-    
-    # Trim the language code down to two letter code.
-    switch -Regex ($LanguageCode) {
-        '^en' {
-            $returnCode = 'en'
-            break
-        }
-        '^(ru|py)' {
-            $returnCode = 'ru'
-            break
-        }
-        '^it' {
-            $returnCode = 'it'
-            break
-        }
-        '^tr' {
-            $returnCode = 'tr'
-            break
-        }
-        '^ka' {
-            $returnCode = 'ka'
-            break
-        }
-        '^pl' {
-            $returnCode = 'pl'
-            break
-        }
-        '^es' {
-            $returnCode = 'es'
-            break
-        }
-        '^fr' {
-            $returnCode = 'fr'
-            break
-        }
-        '^hi' {
-            $returnCode = 'hi'
-            break
-        }
-        '^pt' {
-            $returnCode = 'pt'
-            break
-        }
-        '^id' {
-            $returnCode = 'id'
-            break
-        }
-        '^vi' {
-            $returnCode = 'vi'
-            break
-        }
-        '^ro' {
-            $returnCode = 'ro'
-            break
-        }
-        '^de' {
-            $returnCode = 'de'
-            break
-        }
-        '^hu' {
-            $returnCode = 'hu'
-            break
-        }
-        '^(zh|zh-CN)$' {
-            $returnCode = 'zh'
-            break
-        }
-        '^zh-TW' {
-            $returnCode = 'zh-TW'
-            break
-        }
-        '^ko' {
-            $returnCode = 'ko'
-            break
-        }
-        '^ua' {
-            $returnCode = 'ua'
-            break
-        }
-        '^fa' {
-            $returnCode = 'fa'
-            break
-        }
-        '^sr' {
-            $returnCode = 'sr'
-            break
-        }
-        '^lv' {
-            $returnCode = 'lv'
-            break
-        }
-        Default {
-            $returnCode = $PSUICulture
-            $long_code = $true
-            break
-        }
+    begin {
+        $supportLanguages = @(
+            'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'ko', 'ua', 'fa'
+        )
     }
+    
+    process {
+        # Trim the language code down to two letter code.
+        switch -Regex ($LanguageCode) {
+            '^en' {
+                $returnCode = 'en'
+                break
+            }
+            '^(ru|py)' {
+                $returnCode = 'ru'
+                break
+            }
+            '^it' {
+                $returnCode = 'it'
+                break
+            }
+            '^tr' {
+                $returnCode = 'tr'
+                break
+            }
+            '^ka' {
+                $returnCode = 'ka'
+                break
+            }
+            '^pl' {
+                $returnCode = 'pl'
+                break
+            }
+            '^es' {
+                $returnCode = 'es'
+                break
+            }
+            '^fr' {
+                $returnCode = 'fr'
+                break
+            }
+            '^hi' {
+                $returnCode = 'hi'
+                break
+            }
+            '^pt' {
+                $returnCode = 'pt'
+                break
+            }
+            '^id' {
+                $returnCode = 'id'
+                break
+            }
+            '^vi' {
+                $returnCode = 'vi'
+                break
+            }
+            '^ro' {
+                $returnCode = 'ro'
+                break
+            }
+            '^de' {
+                $returnCode = 'de'
+                break
+            }
+            '^hu' {
+                $returnCode = 'hu'
+                break
+            }
+            '^zh' {
+                $returnCode = 'zh'
+                break
+            }
+            '^ko' {
+                $returnCode = 'ko'
+                break
+            }
+            '^ua' {
+                $returnCode = 'ua'
+                break
+            }
+            '^fa' {
+                $returnCode = 'fa'
+                break
+            }
+            Default {
+                $returnCode = $PSUICulture.Remove(2)
+                break
+            }
+        }
         
-    # Checking the long language code
-    if ($long_code -and $returnCode -NotIn $supportLanguages) {
-        $returnCode = $PSUICulture.Remove(2)
+        # Confirm that the language code is supported by this script.
+        if ($returnCode -NotIn $supportLanguages) {
+            # If the language code is not supported default to English.
+            $returnCode = 'en'
+        }
     }
-    # Checking the short language code
-    if ($returnCode -NotIn $supportLanguages) {
-        # If the language code is not supported default to English.
-        $returnCode = 'en'
+    
+    end {
+        return $returnCode
     }
-    return $returnCode 
 }
 
 function CallLang($clg) {
@@ -243,17 +231,107 @@ function CallLang($clg) {
     }
     catch {
         Write-Host "Error loading $clg language"
-        Pause
-        Exit
     }
 }
 
 
+function Set-ScriptLanguageStrings($LanguageCode) {
+    
+    #Sets the language strings to be used.
+    
+    switch ($LanguageCode) {
+        'en' {
+            $langStrings = CallLang -clg "en"
+            break
+        }
+        'ru' {
+            $langStrings = CallLang -clg "ru"
+            break
+        }
+        'it' {
+            $langStrings = CallLang -clg "it"
+            break
+        }
+        'tr' {
+            $langStrings = CallLang -clg "tr"
+            break
+        }
+        'ka' {
+            $langStrings = CallLang -clg "ka"
+            break
+        }
+        'pl' {
+            $langStrings = CallLang -clg "pl"
+            break
+        }
+        'es' {
+            $langStrings = CallLang -clg "es"
+            break
+        }
+        'fr' {
+            $langStrings = CallLang -clg "fr"
+            break
+        }
+        'hi' {
+            $langStrings = CallLang -clg "hi"
+            break
+        }
+        'pt' {
+            $langStrings = CallLang -clg "pt"
+            break
+        }
+        'id' {
+            $langStrings = CallLang -clg "id"
+            break
+        }
+        'vi' {
+            $langStrings = CallLang -clg "vi"
+            break
+        }
+        'ro' {
+            $langStrings = CallLang -clg "ro"
+            break
+        }
+        'de' {
+            $langStrings = CallLang -clg "de"
+            break
+        }
+        'hu' {
+            $langStrings = CallLang -clg "hu"
+            break
+        }
+        'zh' {
+            $langStrings = CallLang -clg "zh"
+            break
+        }
+        'ko' {
+            $langStrings = CallLang -clg "ko"
+            break
+        }
+        'ua' {
+            $langStrings = CallLang -clg "ua"
+            break
+        }
+        'fa' {
+            $langStrings = CallLang -clg "fa"
+            break
+        }
+        Default {
+            # Default to English if unable to find a match.
+            $langStrings = CallLang -clg "en"
+            break
+        }
+    }
+    
+ 
+    return $langStrings
+}
 
 # Set language code for script.
 $langCode = Format-LanguageCode -LanguageCode $Language
 
-$lang = CallLang -clg $langCode
+# Set script language strings.
+$lang = Set-ScriptLanguageStrings -LanguageCode $langCode
 
 # Set variable 'ru'.
 if ($langCode -eq 'ru') { 
@@ -261,9 +339,25 @@ if ($langCode -eq 'ru') {
     $urlru = "https://raw.githubusercontent.com/chill-music/SpotX-Hurricane/main/Augmented%20translation/ru.json"
     $webjsonru = (Invoke-WebRequest -UseBasicParsing -Uri $urlru).Content | ConvertFrom-Json
 }
+# Set variable 'add translation line'.
+if ($langCode -match '^(it|tr|ka|pl|es|fr|hi|pt|id|vi|ro|de|hu|zh|ko|ua|fa)') { $line = $true }
 
-Write-Host ($lang).Welcome
-Write-Host ""
+# Automatic length of stars
+$au = ($lang).Author.Length + ($lang).Author2.Length
+$by = ($lang).TranslationBy.Length + ($lang).TranslationBy2.Length
+if ($au -gt $by ) { $long = $au + 1 } else { $long = $by + 1 } 
+$st = ""
+$star = $st.PadLeft($long, '*')
+
+Write-Host $star
+Write-Host ($lang).Author"" -NoNewline
+Write-Host ($lang).Author2 -ForegroundColor DarkYellow
+if (!($line)) { Write-Host $star`n }
+if ($line) {
+    Write-Host ($lang).TranslationBy"" -NoNewline
+    Write-Host ($lang).TranslationBy2 -ForegroundColor DarkYellow
+    Write-Host $star`n
+}
 
 # Sending a statistical web query to cutt.ly
 $ErrorActionPreference = 'SilentlyContinue'
@@ -1262,11 +1356,6 @@ if (Test-Path $xpui_js_patch) {
             $name_file = 'xpui-routes-lyrics.js'   
         }
         extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
-        # mini lyrics
-        if ($offline -ge "1.2.0.1155") {
-            $name_file = 'xpui.js'   
-            extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
-        }
     }
     
     # xpui.css
@@ -1393,20 +1482,13 @@ If (Test-Path $xpui_spa_patch) {
 
     # Static color for lyrics
     if ($lyrics_stat) {
-        # old
         if ($offline -lt "1.1.99.871") { 
             $name_file = 'xpui-routes-lyrics.css'
         }
-        # new 
         if ($offline -ge "1.1.99.871") {
             $name_file = 'xpui-routes-lyrics.js'   
         }
         extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
-        # mini lyrics
-        if ($offline -ge "1.2.0.1155") {
-            $name_file = 'xpui.js'   
-            extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
-        }
     }
 
     # Add discriptions (xpui-desktop-modals.js)

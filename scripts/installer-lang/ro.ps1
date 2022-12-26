@@ -1,8 +1,8 @@
 [PSCustomObject]@{
-    Welcome         = "
-╔══════════════════════════════╗
-║ Welcome to SpotX for Windows ║
-╚══════════════════════════════╝"
+    Author          = "Autorul patchului:"
+    Author2         = "@Shehab"
+    TranslationBy   = "Autorul traducerii:"
+    TranslationBy2  = "@scr3ppie"
     Incorrect       = "Ups, o valoare incorectă,"
     Incorrect2      = "introduceți din nou prin "
     Download        = "Eroare la descărcare"

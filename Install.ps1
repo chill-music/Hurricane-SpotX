@@ -1588,4 +1588,4 @@ if ($cache_install) {
 
 if ($start_spoti) { Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable }
 
-Write-Host ($lang).InstallComplete`n -ForegroundColor Green + ($lang).InstallComplete2
+Write-Host ($lang).InstallComplete`n -ForegroundColor Green

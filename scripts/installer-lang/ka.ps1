@@ -1,8 +1,9 @@
 [PSCustomObject]@{
-    Author          = "პაჩის ავტორი:"
-    Author2         = "@Shehab"
-    TranslationBy   = "თარგმანის ავტორი:"
-    TranslationBy2  = "@Naviamold1"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "უპს, არასწორი შენატანი,"
     Incorrect2      = "მაგრამ თავიდან სცადე"
     Download        = "შეცდომა ჩაწერის დროს"

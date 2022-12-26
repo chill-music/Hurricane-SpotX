@@ -1,8 +1,9 @@
 [PSCustomObject]@{
-    Author          = "Yama yapımcısı:"
-    Author2         = "@Shehab"
-    TranslationBy   = "Tercüman:"
-    TranslationBy2  = "@metezd"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "Eyvah, yanlış bir değer,"
     Incorrect2      = "tekrar girin "
     Download        = "İndirirken hata oluştu"

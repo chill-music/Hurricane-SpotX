@@ -1,6 +1,9 @@
 [PSCustomObject]@{
-    Author          = "Patch author:"
-    Author2         = "@Shehab"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "Oops, an incorrect value,"
     Incorrect2      = "enter again through "
     Download        = "Error downloading"

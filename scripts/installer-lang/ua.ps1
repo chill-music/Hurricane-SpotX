@@ -1,8 +1,9 @@
 [PSCustomObject]@{
-    Author          = "Автор патчу:"
-    Author2         = "@Shehab"
-    TranslationBy   = "Автор перекладу:"
-    TranslationBy2  = "@va1dee"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "Упс, некоректне значення,"
     Incorrect2      = "введіть знову через "
     Download        = "Помилка завантаження"

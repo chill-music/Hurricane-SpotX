@@ -1,8 +1,9 @@
 [PSCustomObject]@{
-    Author          = "Patch szerzője:"
-    Author2         = "@Shehab"
-    TranslationBy   = "Fordítás szerzője:"
-    TranslationBy2  = "@Wex02"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "Hoppá, helytelen érték,"
     Incorrect2      = "Próbáld újra "
     Download        = "Letöltési hiba"

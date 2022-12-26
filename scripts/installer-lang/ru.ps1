@@ -1,6 +1,9 @@
 [PSCustomObject]@{
-    Author          = "Автор патча:"
-    Author2         = "@Shehab"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "Ой, некорректное значение,"
     Incorrect2      = "повторите ввод через"
     Download        = "Ошибка загрузки"

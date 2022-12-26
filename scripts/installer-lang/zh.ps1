@@ -1,8 +1,9 @@
 [PSCustomObject]@{
-    Author          = "补丁作者:"
-    Author2         = "@Shehab"
-    TranslationBy   = "翻译作者:"
-    TranslationBy2  = "@lumineyuri"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "糟糕,不正确的参数,"
     Incorrect2      = "请重新输入 "
     Download        = "下载错误"

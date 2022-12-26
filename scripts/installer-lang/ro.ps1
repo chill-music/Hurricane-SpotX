@@ -1,8 +1,9 @@
 [PSCustomObject]@{
-    Author          = "Autorul patchului:"
-    Author2         = "@Shehab"
-    TranslationBy   = "Autorul traducerii:"
-    TranslationBy2  = "@scr3ppie"
+    Welcome         = "
+╔════════════════════════════════════════╗
+║ Welcome to Hurricane-SpotX for Windows ║
+╚════════════════════════════════════════╝"
+    Welcome2        = "Patch author: @Shehab"
     Incorrect       = "Ups, o valoare incorectă,"
     Incorrect2      = "introduceți din nou prin "
     Download        = "Eroare la descărcare"

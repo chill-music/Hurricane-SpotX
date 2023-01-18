@@ -1,5 +1,5 @@
   <p align="center">
-  <a href="https://github.com/chill-music/Hurricane-SpotX/releases"><img src="https://raw.githubusercontent.com/SpotX-CLI/SpotX-commons/main/.github/Pic/Logo/logo-win.png" />
+  <a href="https://github.com/chill-music/Hurricane-SpotX/releases"><img src="https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/logo-win1.png" />
 </p>
 
 <p align="center">        

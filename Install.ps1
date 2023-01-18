@@ -72,14 +72,8 @@ param
     [Parameter(HelpMessage = 'Return the old device picker')]
     [switch]$device_picker_old,
 
-    [Parameter(HelpMessage = 'Disable the new home structure and navigation.')]
-    [switch]$navalt_off,
-
-    [Parameter(HelpMessage = 'Enable new left sidebar.')]
-    [switch]$left_sidebar_on,
-     
-    [Parameter(HelpMessage = 'Enable new right sidebar.')]
-    [switch]$right_sidebar_on,
+    [Parameter(HelpMessage = 'New theme activated (new right and left sidebar, some cover change)')]
+    [switch]$new_theme,
     
     [Parameter(HelpMessage = 'Do not create desktop shortcut.')]
     [switch]$no_shortcut,
@@ -119,7 +113,7 @@ function Format-LanguageCode {
     
     
     $supportLanguages = @(
-        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv', 'bn'
+        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv', 'bn', 'el'
     )
     
     
@@ -215,6 +209,10 @@ function Format-LanguageCode {
         }
         '^bn' {
             $returnCode = 'bn'
+            break
+        }
+        '^el' {
+            $returnCode = 'el'
             break
         }
         Default {
@@ -334,11 +332,7 @@ function downloadScripts($param1) {
     if ($param1 -eq "Desktop") {
         Import-Module BitsTransfer
         
-        $l = "$PWD\links.tsv"
-        $old = [IO.File]::ReadAllText($l)
-        $links = $old -match "https:\/\/upgrade.scdn.co\/upgrade\/client\/win32-x86\/spotify_installer-$online\.g[0-9a-f]{8}-[0-9]{1,4}\.exe" 
-        $links = $Matches.Values
-        $links = $links -replace "upgrade.scdn", "download.scdn"
+        $links = "https://download.scdn.co/upgrade/client/win32-x86/spotify_installer-$onlineFull.exe"
     }
     if ($ru -and $param1 -eq "cache-spotify") {
         $links2 = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/cache_spotify_ru.ps1"
@@ -349,10 +343,10 @@ function downloadScripts($param1) {
     
     $web_Url_prev = "https://github.com/mrpond/BlockTheSpot/releases/latest/download/chrome_elf.zip", $links, `
         $links2, "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/hide_window.vbs", `
-        "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/run_ps.bat", "https://docs.google.com/spreadsheets/d/e/2PACX-1vRmAwP4tcX5pXW1ALGX8DWD1NjYygrKmOMBBBObbTiu_rRFhMZ9kiYv16aelETi_F_xsdjXxqHv9fKx/pub?output=tsv"
+        "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/run_ps.bat"
 
-    $local_Url_prev = "$PWD\chrome_elf.zip", "$PWD\SpotifySetup.exe", "$cache_folder\cache_spotify.ps1", "$cache_folder\hide_window.vbs", "$cache_folder\run_ps.bat", "$PWD\links.tsv"
-    $web_name_file_prev = "chrome_elf.zip", "SpotifySetup.exe", "cache_spotify.ps1", "hide_window.vbs", "run_ps.bat", "links.tsv"
+    $local_Url_prev = "$PWD\chrome_elf.zip", "$PWD\SpotifySetup.exe", "$cache_folder\cache_spotify.ps1", "$cache_folder\hide_window.vbs", "$cache_folder\run_ps.bat"
+    $web_name_file_prev = "chrome_elf.zip", "SpotifySetup.exe", "cache_spotify.ps1", "hide_window.vbs", "run_ps.bat"
 
     switch ( $param1 ) {
         "BTS" { $web_Url = $web_Url_prev[0]; $local_Url = $local_Url_prev[0]; $web_name_file = $web_name_file_prev[0] }
@@ -360,7 +354,6 @@ function downloadScripts($param1) {
         "cache-spotify" { $web_Url = $web_Url_prev[2]; $local_Url = $local_Url_prev[2]; $web_name_file = $web_name_file_prev[2] }
         "hide_window" { $web_Url = $web_Url_prev[3]; $local_Url = $local_Url_prev[3]; $web_name_file = $web_name_file_prev[3] }
         "run_ps" { $web_Url = $web_Url_prev[4]; $local_Url = $local_Url_prev[4]; $web_name_file = $web_name_file_prev[4] } 
-        "links.tsv" { $web_Url = $web_Url_prev[5]; $local_Url = $local_Url_prev[5]; $web_name_file = $web_name_file_prev[5] }
     }
 
     if ($param1 -eq "Desktop") {
@@ -369,16 +362,19 @@ function downloadScripts($param1) {
     }
     try { 
         if ($param1 -eq "Desktop" -and $curl_check) {
-            $stcode = curl.exe -I -s $web_Url --retry 1 --ssl-no-revoke
-            if (!($stcode -match "200 OK")) { throw ($lang).Download6 }
+            $stcode = curl.exe -s -w "%{http_code}" -o /dev/null $web_Url --retry 2 --ssl-no-revoke
+            if ($stcode -ne "200") { throw ($lang).Download6 }
             curl.exe $web_Url -o $local_Url --progress-bar --retry 3 --ssl-no-revoke
+            return
         }
-        if ($param1 -eq "Desktop" -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
+        if ($param1 -eq "Desktop" -and !($curl_check ) -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable)) {
             $ProgressPreference = 'Continue'
             Start-BitsTransfer -Source  $web_Url -Destination $local_Url  -DisplayName ($lang).Download5 -Description "$online "
+            return
         }
-        if ($param1 -eq "Desktop" -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
+        if ($param1 -eq "Desktop" -and !($curl_check ) -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable)) {
             $webClient.DownloadFile($web_Url, $local_Url) 
+            return
         }
         if ($param1 -ne "Desktop") {
             $ProgressPreference = 'SilentlyContinue' # Hiding Progress Bars
@@ -396,15 +392,18 @@ function downloadScripts($param1) {
         try { 
 
             if ($param1 -eq "Desktop" -and $curl_check) {
-                $stcode = curl.exe -I -s $web_Url --retry 1 --ssl-no-revoke
-                if (!($stcode -match "200 OK")) { throw ($lang).Download6 }
+                $stcode = curl.exe -s -w "%{http_code}" -o /dev/null $web_Url --retry 2 --ssl-no-revoke
+                if ($stcode -ne "200") { throw ($lang).Download6 }
                 curl.exe $web_Url -o $local_Url --progress-bar --retry 3 --ssl-no-revoke
+                return
             }
             if ($param1 -eq "Desktop" -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
                 Start-BitsTransfer -Source  $web_Url -Destination $local_Url  -DisplayName ($lang).Download5 -Description "$vernew "
+                return
             }
             if ($param1 -eq "Desktop" -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
                 $webClient.DownloadFile($web_Url, $local_Url) 
+                return
             }
             if ($param1 -ne "Desktop") {
                 $webClient.DownloadFile($web_Url, $local_Url) 
@@ -447,7 +446,8 @@ function DesktopFolder {
 }
 
 # Recommended version for spotx
-$online = "1.2.2.582"
+$onlineFull = "1.2.3.1115.gd61a8f5c-384"
+$online = ($onlineFull -split ".g")[0]
 
 # Check version Spotify offline
 $offline = (Get-Item $spotifyExecutable).VersionInfo.FileVersion
@@ -543,7 +543,6 @@ if (!($premium) -and $bts) {
     [System.IO.Compression.ZipFileExtensions]::ExtractToDirectory($zip, $PWD)
     $zip.Dispose()
 }
-downloadScripts -param1 "links.tsv"
 
 $spotifyInstalled = (Test-Path -LiteralPath $spotifyExecutable)
 
@@ -608,7 +607,9 @@ if ($spotifyInstalled) {
             $txt = [IO.File]::ReadAllText($spotifyExecutable)
             $regex = "(\d+)\.(\d+)\.(\d+)\.(\d+)(\.g[0-9a-f]{8})"
             $v = $txt | Select-String $regex -AllMatches
-            $version = $v.Matches.Value
+            $version = $v.Matches.Value[0]
+            if ($version.Count -gt 1) { $version = $version[0] }
+
             $Parameters = @{
                 Uri    = 'https://docs.google.com/forms/d/e/1FAIpQLSegGsAgilgQ8Y36uw-N7zFF6Lh40cXNfyl1ecHPpZcpD8kdHg/formResponse'
                 Method = 'POST'
@@ -1019,11 +1020,7 @@ function Helper($paramname) {
                 $rem.remove('similarplaylist'), $rem.remove('leftsidebar'), $rem.remove('rightsidebar'), $rem.remove('badbunny'), $rem.remove('devicelocal'),
                 $rem.remove('silencetrimmer'), $rem.remove('forgetdevice'), $rem.remove('speedpodcasts') , $rem.remove('showfollows')
             }
-            if (!($left_sidebar_on)) { $rem.remove('leftsidebar') }
-            if (!($right_sidebar_on)) { $rem.remove('rightsidebar'), $rem.remove('lyricssidebar') }
-            if ($navalt_off) { $rem.remove('newhome'), $rem.remove('newhome2') }
-
-            $rem.remove('showfollows')
+            if (!($new_theme)) { $rem.remove('newhome'), $rem.remove('newhome2'), $rem.remove('leftsidebar'), $rem.remove('rightsidebar'), $rem.remove('lyricssidebar') }
 
             $name = "patches.json.exp."
             $n = "xpui.js"
@@ -1178,7 +1175,7 @@ if ($test_js) {
     $xpui_test_js = $reader.ReadToEnd()
     $reader.Close()
         
-    If ($xpui_test_js -match 'Patched by Shehab') {
+    If ($xpui_test_js -match 'patched by spotx') {
 
         $test_xpui_js_bak = Test-Path -Path $xpui_js_bak_patch
         $test_xpui_css_bak = Test-Path -Path $xpui_css_bak_patch
@@ -1266,12 +1263,13 @@ if ($test_js) {
     if ($lyrics_stat) {
         if ($offline -lt "1.1.99.871") { 
             $name_file = 'xpui-routes-lyrics.css'
+            extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
         }
-        if ($offline -ge "1.1.99.871") {
+        if ($offline -ge "1.1.99.871" -and $offline -le "1.2.2.582") {
             extract -counts 'one' -method 'nonezip' -name 'xpui.css' -helper 'Fix-New-Lirics'
-            $name_file = 'xpui-routes-lyrics.js'   
+            $name_file = 'xpui-routes-lyrics.js' 
+            extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'  
         }
-        extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
         # mini lyrics
         if ($offline -ge "1.2.0.1155") {
             $name_file = 'xpui.js'   
@@ -1316,7 +1314,7 @@ If ($test_spa) {
     $patched_by_spotx = $reader.ReadToEnd()
     $reader.Close()
 
-    If ($patched_by_spotx -match 'Patched by Shehab') {
+    If ($patched_by_spotx -match 'patched by spotx') {
         $zip.Dispose()    
 
         if ($test_bak_spa) {
@@ -1403,13 +1401,14 @@ If ($test_spa) {
         # old
         if ($offline -lt "1.1.99.871") { 
             $name_file = 'xpui-routes-lyrics.css'
+            extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
         }
         # new 
-        if ($offline -ge "1.1.99.871") {
+        if ($offline -ge "1.1.99.871" -and $offline -le "1.2.2.582") {
             extract -counts 'one' -method 'zip' -name 'xpui.css' -helper 'Fix-New-Lirics'
             $name_file = 'xpui-routes-lyrics.js'   
+            extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
         }
-        extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
         # mini lyrics
         if ($offline -ge "1.2.0.1155") {
             $name_file = 'xpui.js'   
@@ -1437,11 +1436,15 @@ If ($test_spa) {
     }
 
     # New UI fix
-    if (!($navalt_off)) {
-        $navaltfix = $webjson.others.navaltfix.add[0]
-        $navaltfix2 = $webjson.others.navaltfix.add[1]
-    }
-    if (!($navalt_off) -or !($premium)) {
+    if ($new_theme) {
+        if ($offline -ge "1.1.94.864" -and $offline -lt "1.2.3.1107") {
+            $navaltfix = $webjson.others.navaltfix.add[0]
+        }
+        if ($offline -ge "1.2.3.1107") {
+            $navaltfix = $webjson.others.navaltfix.add[1]
+        }
+        $navaltfix2 = $webjson.others.navaltfix.add[2]
+
         $css = $icon, $submenu, $very_high, $navaltfix, $navaltfix2
         extract -counts 'one' -method 'zip' -name 'xpui.css' -add $css
     }

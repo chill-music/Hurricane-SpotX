@@ -113,7 +113,7 @@ function Format-LanguageCode {
     
     
     $supportLanguages = @(
-        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv', 'bn', 'el'
+        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv', 'bn', 'el', 'fi'
     )
     
     
@@ -215,6 +215,10 @@ function Format-LanguageCode {
             $returnCode = 'el'
             break
         }
+        '^fi' {
+            $returnCode = 'fi'
+            break
+        }
         Default {
             $returnCode = $PSUICulture
             $long_code = $true
@@ -260,7 +264,7 @@ $lang = CallLang -clg $langCode
 # Set variable 'ru'.
 if ($langCode -eq 'ru') { 
     $ru = $true
-    $urlru = "https://raw.githubusercontent.com/chill-music/SpotX-Hurricane/main/Augmented%20translation/ru.json"
+    $urlru = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/patches/Augmented%20translation/ru.json"
     $webjsonru = (Invoke-WebRequest -useb -Uri $urlru).Content | ConvertFrom-Json
 }
 
@@ -446,7 +450,7 @@ function DesktopFolder {
 }
 
 # Recommended version for spotx
-$onlineFull = "1.2.3.1115.gd61a8f5c-384"
+$onlineFull = "1.2.4.905.gaf3b1e64-104"
 $online = ($onlineFull -split ".g")[0]
 
 # Check version Spotify offline
@@ -847,7 +851,7 @@ if (!($cache_on) -and !($cache_off)) {
 if ($exp_standart) { Write-Host ($lang).ExpStandart`n }
 if ($exp_spotify) { Write-Host ($lang).ExpSpotify`n }
 
-$url = "https://raw.githubusercontent.com/chill-music/SpotX-Hurricane/main/patches.json"
+$url = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/patches/patches.json"
 $webjson = (Invoke-WebRequest -useb -Uri $url).Content | ConvertFrom-Json
 
 function Helper($paramname) {
@@ -877,11 +881,10 @@ function Helper($paramname) {
             $contents = "minjson"
             $json = $webjson.others
         }
-        "FixOldTheme" { 
+        "FixCss" { 
             # Remove indent for old theme xpui.css
             $name = "patches.json.others."
             $n = "xpui.css"
-            $contents = "fix-old-theme"
             $json = $webjson.others
         }
         "RemovertlCssmin" { 
@@ -937,12 +940,6 @@ function Helper($paramname) {
             $n = $name_file
             $json = $webjson.others
         }
-        "Fix-New-Lirics" {
-            $name = "patches.json.others."
-            $contents = "fixcsslyricscolor2"
-            $n = "xpui.css"
-            $json = $webjson.others
-        }
         "Discriptions" {  
             # Add discriptions (xpui-desktop-modals.js)
             $name = "patches.json.others."
@@ -961,16 +958,13 @@ function Helper($paramname) {
         "OffPodcasts" {  
             # Turn off podcasts
             if ($offline -le "1.1.92.647") { $contents = "podcastsoff" }
-            if ($offline -ge "1.1.93.896" -and $offline -le "1.1.96.785") { $contents = "podcastsoff2" }
-            if ($offline -ge "1.1.97.952") { $contents = "podcastsoff3" }
+            if ($offline -ge "1.1.93.896") { $contents = "podcastsoff2" }
             $n = $js
             $name = "patches.json.others."
             $json = $webjson.others
         }
         "OffAdSections" {  
             # Hiding Ad-like sections from the homepage
-            if ($offline -le "1.1.96.785") { $webjson.others.adsectionsoff.replace = '$1 if ($3' + $webjson.others.adsectionsoff.replace }
-            else { $webjson.others.adsectionsoff.replace = '$1 if ($4' + $webjson.others.adsectionsoff.replace }
             $n = $js
             $name = "patches.json.others."
             $contents = "adsectionsoff"
@@ -1266,7 +1260,8 @@ if ($test_js) {
             extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
         }
         if ($offline -ge "1.1.99.871" -and $offline -le "1.2.2.582") {
-            extract -counts 'one' -method 'nonezip' -name 'xpui.css' -helper 'Fix-New-Lirics'
+            $contents = "fixcsslyricscolor2"
+            extract -counts 'one' -method 'nonezip' -name 'xpui.css' -helper 'FixCss'
             $name_file = 'xpui-routes-lyrics.js' 
             extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'  
         }
@@ -1280,15 +1275,18 @@ if ($test_js) {
     # xpui.css
     if (!($premium)) {
         # Hide download icon on different pages
-        $icon = $webjson.others.downloadicon.add
+        $css += $webjson.others.downloadicon.add
         # Hide submenu item "download"
-        $submenu = $webjson.others.submenudownload.add
+        $css += $webjson.others.submenudownload.add
         # Hide very high quality streaming
-        $very_high = $webjson.others.veryhighstream.add
-
-        $css = $icon, $submenu, $very_high
-        extract -counts 'one' -method 'nonezip' -name 'xpui.css' -add $css
+        $css += $webjson.others.veryhighstream.add
     }
+    if ($new_theme -and $offline -ge "1.2.3.1107") {
+        $css += $webjson.others.navaltfix.add[3]
+        $css += $webjson.others.navaltfix.add[4]
+    }
+    if ($null -ne $css ) { extract -counts 'one' -method 'nonezip' -name 'xpui.css' -add $css }
+    
 
     # licenses.html minification
     extract -counts 'one' -method 'nonezip' -name 'licenses.html' -helper 'HtmlLicMin'
@@ -1405,7 +1403,8 @@ If ($test_spa) {
         }
         # new 
         if ($offline -ge "1.1.99.871" -and $offline -le "1.2.2.582") {
-            extract -counts 'one' -method 'zip' -name 'xpui.css' -helper 'Fix-New-Lirics'
+            $contents = "fixcsslyricscolor2"
+            extract -counts 'one' -method 'zip' -name 'xpui.css' -helper 'FixCss'
             $name_file = 'xpui-routes-lyrics.js'   
             extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
         }
@@ -1426,31 +1425,41 @@ If ($test_spa) {
     extract -counts 'more' -name '*.js' -helper 'MinJs'
 
     # xpui.css
-    if (!($premium)) {
-        # Hide download icon on different pages
-        $icon = $webjson.others.downloadicon.add
-        # Hide submenu item "download"
-        $submenu = $webjson.others.submenudownload.add
-        # Hide very high quality streaming
-        $very_high = $webjson.others.veryhighstream.add
-    }
-
-    # New UI fix
-    if ($new_theme) {
-        if ($offline -ge "1.1.94.864" -and $offline -lt "1.2.3.1107") {
-            $navaltfix = $webjson.others.navaltfix.add[0]
+    if ($new_theme -or !($premium)) {
+        if (!($premium)) {
+            # Hide download icon on different pages
+            $css += $webjson.others.downloadicon.add
+            # Hide submenu item "download"
+            $css += $webjson.others.submenudownload.add
+            # Hide very high quality streaming
+            $css += $webjson.others.veryhighstream.add
         }
-        if ($offline -ge "1.2.3.1107") {
-            $navaltfix = $webjson.others.navaltfix.add[1]
-        }
-        $navaltfix2 = $webjson.others.navaltfix.add[2]
 
-        $css = $icon, $submenu, $very_high, $navaltfix, $navaltfix2
-        extract -counts 'one' -method 'zip' -name 'xpui.css' -add $css
+        # New UI fix
+        if ($new_theme) {
+            if ($offline -ge "1.1.94.864" -and $offline -lt "1.2.3.1107") {
+                $css += $webjson.others.navaltfix.add[0]
+            }
+            if ($offline -ge "1.2.3.1107") {
+                $css += $webjson.others.navaltfix.add[1]
+                $css += $webjson.others.navaltfix.add[3]
+                $css += $webjson.others.navaltfix.add[4]
+            }
+            $css += $webjson.others.navaltfix.add[2]
+        }
+        if ($null -ne $css ) { extract -counts 'one' -method 'zip' -name 'xpui.css' -add $css }
+        
     }
     
     # Old UI fix
-    extract -counts 'one' -method 'zip' -name 'xpui.css' -helper "FixOldTheme"
+    $contents = "fix-old-theme"
+    extract -counts 'one' -method 'zip' -name 'xpui.css' -helper "FixCss"
+
+    # Fix scroll bug navylx
+    if ($offline -ge "1.2.4.893") {
+        $contents = "fix-scroll-bug-navylx"
+        extract -counts 'one' -method 'zip' -name 'xpui.css' -helper "FixCss"
+    }
 
     # Remove RTL and minification of all *.css
     extract -counts 'more' -name '*.css' -helper 'RemovertlCssmin'
@@ -1600,3 +1609,4 @@ if ($cache_install) {
 if ($start_spoti) { Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable }
 
 Write-Host ($lang).InstallComplete`n -ForegroundColor Green
+Write-Host ($lang).InstallComplete2`n -ForegroundColor Red

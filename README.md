@@ -1,5 +1,5 @@
   <p align="center">
-  <a href="https://github.com/chill-music/Hurricane-SpotX/releases"><img src="https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/logo-win1.png" />
+  <a href="https://github.com/chill-music/Hurricane-SpotX/releases"><img src="https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/logo-win.png" />
 </p>
 
 <p align="center">        
@@ -15,7 +15,7 @@
 - <strong>OS: Windows 7-11</strong>
 - <strong>Spotify: latest official [versions](https://docs.google.com/spreadsheets/d/15jjY_pcW51uYOzZlCaRw7SRb1g1nkLdkTp2xZYTx1tw/edit?usp=sharing)</strong>
 - <strong>For Windows Desktop only (Microsoft store version is not suitable).</strong>
-- <strong>PowerShell: 3 or higher</strong>
+- <strong>PowerShell: version 5 and above recommended</strong>
 
 <h1>Features</h1>
 
@@ -159,7 +159,7 @@ or
 <summary><small>Installing with Scoop</small></summary><p>
   
   #### Installing SpotX via the Scoop package manager includes:
-
+  - New theme activated (new right and left sidebar, some cover change)
   - Automatic removal of Spotify MS if it was found 
   - Automatic installation of the recommended version of Spotify (if another client has already been found, it will be installed over) 
   - Hiding podcasts/episodes/audiobooks from the homepage  
@@ -208,8 +208,8 @@ or
 
 <h1>FAQ</h1>
 
-- Read [FAQ](https://telegra.ph/soon)
+- Read [FAQ](https://telegra.ph/SpotX-FAQ-09-19)
 
 <h1>Credits</h1>
 
-- This repository partially uses <a href="https://github.com/chill-music">Hurricane</a>,
+- This repository partially uses <a href="https://github.com/mrpond/BlockTheSpot">BlockTheSpot</a>, and also some tricks were taken from <a href="https://github.com/khanhas/spicetify-cli">spicetify-cli</a>, many thanks to the contributors

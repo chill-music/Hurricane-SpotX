@@ -1,8 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
+╔═══════════════════════════════════════════╗
+║ Bienvenido a Hurricane-SpotX para Windows ║
+╚═══════════════════════════════════════════╝"
     Welcome2        = "
 ╔════════════════════════════════════════╗
 ║         Patch author: @Shehab          ║
@@ -17,7 +17,7 @@
     Download6       = "Curl error" #
     StopScrpit      = "El script se ha detenido"
     MsSpoti         = "La versión de Spotify de Microsoft Store se ha detectado y no es compatible"
-    MsSpoti2        = "Desinstalar Spotify edición Windows Store [Y/N]"
+    MsSpoti2        = "Desinstalar Spotify edición Microsoft Store [Y/N]"
     MsSpoti3        = "Desinstalación automática de Spotify de Microsoft Store..."
     MsSpoti4        = "Desinstalación de Spotify de Microsoft Store..."
     Prem            = "Modificación para la cuenta premium..."
@@ -36,7 +36,7 @@
     DownSpoti2      = "Por favor, espera..."
     PodcatsOff      = "Podcasts desactivados"
     PodcastsOn      = "Podcasts activados"
-    PodcatsSelect   = "Do you want to disable podcasts, episodes and audiobooks from the main page? [Y/N]" #
+    PodcatsSelect   = "¿Quieres desactivar los podcasts, episodios y audiolibros de la página principal? [Y/N]"
     DowngradeNote   = "Es recomendable bloquear las actualizaciones porque ha habido una bajada en la versión de Spotify"
     UpdBlock        = "Actualizaciones de Spotify bloqueadas"
     UpdUnblock      = "Las actualizaciones de Spotify no están bloqueadas"

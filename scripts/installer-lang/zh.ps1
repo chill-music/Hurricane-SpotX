@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔════════════════════════════════╗
+║ 欢迎使用 SpotX 的 Windows 版本 ║
+╚════════════════════════════════╝"
     Incorrect       = "糟糕,不正确的参数,"
     Incorrect2      = "请重新输入 "
     Download        = "下载错误"
@@ -15,7 +11,7 @@
     Download4       = "检查您的网络设置后再次尝试安装"
     Download5       = "下载 Spotify"
     Download6       = "Curl 错误"
-    StopScrpit      = "脚本已停止"
+    StopScript      = "脚本已停止"
     MsSpoti         = "检测到 Spotify 是微软商店版本,该版本不受到支持"
     MsSpoti2        = "卸载微软商店的 Spotify [Y/N]"
     MsSpoti3        = "自动卸载 Spotify 的微软商店版本..."
@@ -49,14 +45,8 @@
     ModSpoti        = "修补 Spotify..."
     Error           = "错误"
     FileLocBroken   = "Spotify 文件已损坏,请卸载客户端并重新运行脚本"
-    Spicetify       = "检测到 Spicetify"
-    NoRestore       = "SpotX 已经安装, 但是找不到文件 xpui.js.bak 和 xpui.css.bak . `n请重新安装 Spotify 客户端后再次运行 install.bat"
-    ExpSpotify      = "启用 Spotify 的实验性功能"
-    ExpStandart     = "SpotX 的实验性功能未被启用"
-    NoRestore2      = "SpotX 已经安装, 但是找不到文件 xpui.bak . `n请重新安装 Spotify 客户端后再次运行 install.bat"
-    UpdateBlocked   = "Spotify 的更新已经被阻止了"
-    UpdateError     = "阻止更新失败"
-    NoSpotifyExe    = "未找到 Spotify.exe"
+    Spicetify       = "检测到 Spicetify，它必须在安装 SpotX 后进行安装。是否打开 FAQ 中的建议操作？ [Y/N]"
+    NoRestore       = "SpotX 已经安装, 但是找不到文件 xpui.bak . `n请重新安装 Spotify 客户端后再次运行 install.bat"
     InstallComplete = "安装完成"
     HostInfo        = "在 hosts 文件中发现的不需要的 URL"
     HostBak         = "备份原始 hosts 文件为 hosts.bak..."

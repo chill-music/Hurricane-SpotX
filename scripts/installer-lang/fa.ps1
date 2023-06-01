@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "اوه، یک مقدار نادرست"
     Incorrect2      = "دوباره وارد شوید "
     Download        = "خطا در دانلود"
@@ -15,7 +11,7 @@
     Download4       = "تنظیمات شبکه خود را بررسی کنید و دوباره نصب را اجرا کنید"
     Download5       = "در حال دانلود اسپاتیفای"
     Download6       = "خطای Curl"
-    StopScrpit      = "اسکریپت متوقف شده است"
+    StopScript      = "اسکریپت متوقف شده است"
     MsSpoti         = "نسخه اسپاتیفای ویندوز استور شناسایی شده است که پشتیبانی نمی شود"
     MsSpoti2        = "نسخه اسپاتیفای ویندوز استور حذف شود [Y/N]"
     MsSpoti3        = "حذف خودکار اسپاتیفای MS"
@@ -49,14 +45,8 @@
     ModSpoti        = "در حال پچ کردن اسپاتیفای"
     Error           = "خطا"
     FileLocBroken   = "محل فایل های اسپاتیفای خراب است، کلاینت را حذف نصب کنید و اسکریپت را دوباره اجرا کنید"
-    Spicetify       = "Spicetify شناسایی شد"
-    NoRestore       = "SpotX قبلاً نصب شده است، اما فایل‌هایی برای بازیابی xpui.js.bak و xpui.css.bak یافت نشد. `nلطفاً کلاینت Spotify را حذف نصب کنید و Install.bat را دوباره اجرا کنید"
-    ExpSpotify      = "ویژگی های آزمایشی توسط اسپاتیفای"
-    ExpStandart     = "ویژگی های آزمایشی SpotX گنجانده نشده است"
-    NoRestore2      = "SpotX قبلاً نصب شده است، xpui.bak یافت نشد. `nلطفاً کلاینت Spotify را حذف نصب کنید و Install.bat را دوباره اجرا کنید"
-    UpdateBlocked   = "به روز رسانی اسپاتیفای در حال حاضر مسدود شده است"
-    UpdateError     = "مشکل در بلاک کردن اپدیت ها"
-    NoSpotifyExe    = "Spotify.exe پیدا نشد"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX قبلاً نصب شده است، xpui.bak یافت نشد. `nلطفاً کلاینت Spotify را حذف نصب کنید و Install.bat را دوباره اجرا کنید"
     InstallComplete = "نصب تکمیل شد"
     HostInfo        = "URL های ناخواسته در فایل هاست یافت می شود"
     HostBak         = "پشتیبان گیری از hosts.bak"

@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "Hoppá, helytelen érték,"
     Incorrect2      = "Próbáld újra "
     Download        = "Letöltési hiba"
@@ -15,7 +11,7 @@
     Download4       = "Ellenőrizze a hálózati beállításokat, és futtassa újra a telepítést"
     Download5       = "Spotify letöltése"
     Download6       = "Curl hiba"
-    StopScrpit      = "A script leállt"
+    StopScript      = "A script leállt"
     MsSpoti         = "A Spotify Microsoft Store verziója van telepítve, amely nem támogatott"
     MsSpoti2        = "A Spotify Microsoft Store kiadásának eltávolítása [Y/N]"
     MsSpoti3        = "A Spotify MS automatikus eltávolítása..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Spotify patchelése..."
     Error           = "Hiba"
     FileLocBroken   = "A Spotify fájlok sérültek, távolítsa el a klienst, és futtassa újra a szkriptet."
-    Spicetify       = "Spicetify érzékelve."
-    NoRestore       = "A SpotX már telepítve van, de a helyreállító fájlok xpui.js.bak és xpui.css.bak nem találhatóak. `nTávolítsa el a Spotify klienst, és futtassa újra az Install.bat fájlt."
-    ExpSpotify      = "A Spotify kísérleti funkciók engedélyezve"
-    ExpStandart     = "A SpotX kísérleti funkciói nincsenek egedélyezve"
-    NoRestore2      = "A SpotX már telepítve van, az xpui.bak nem található. `nTávolítsa el a Spotify klienst, és futtassa újra az Install.bat fájlt."
-    UpdateBlocked   = "A Spotify frissítések már blokkolva vannak"
-    UpdateError     = "Nem sikerült blokkolni a frissítéseket"
-    NoSpotifyExe    = "Spotify.exe nem található"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "A SpotX már telepítve van, az xpui.bak nem található. `nTávolítsa el a Spotify klienst, és futtassa újra az Install.bat fájlt."
     InstallComplete = "Telepítés befejeződött"
     HostInfo        = "Nemkívánatos URL-címek a hosts fájlban"
     HostBak         = "A hosts.bak mentése..."

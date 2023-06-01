@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔═══════════════════════════════════════════╗
-║ Bienvenido a Hurricane-SpotX para Windows ║
-╚═══════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔═════════════════════════════════╗
+║ Bienvenido a SpotX para Windows ║
+╚═════════════════════════════════╝"
     Incorrect       = "Ufff, un valor incorrecto,"
     Incorrect2      = "ingrese nuevamente el valor "
     Download        = "Error al descargar"
@@ -15,7 +11,7 @@
     Download4       = "Comprueba tu configuración de red y ejecuta la instalación de nuevo"
     Download5       = "Descargando Spotify"
     Download6       = "Curl error" #
-    StopScrpit      = "El script se ha detenido"
+    StopScript      = "El script se ha detenido"
     MsSpoti         = "La versión de Spotify de Microsoft Store se ha detectado y no es compatible"
     MsSpoti2        = "Desinstalar Spotify edición Microsoft Store [Y/N]"
     MsSpoti3        = "Desinstalación automática de Spotify de Microsoft Store..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Parcheando Spotify..."
     Error           = "Error"
     FileLocBroken   = "La ubicación de los archivos de Spotify no funciona, desinstala el cliente y vuelve a ejecutar el script"
-    Spicetify       = "Spicetify detectado"
-    NoRestore       = "SpotX ya ha sido instalado, pero los archivos a recuperar xpui.js.bak y xpui.css.bak no se encuentran. `nPor favor, desinstala el cliente Spotify y ejecuta Install.bat de nuevo"
-    ExpSpotify      = "Funciones experimentales utilizadas para Spotify"
-    ExpStandart     = "Las características experimentales de SpotX no están incluidas"
-    NoRestore2      = "SpotX ya ha sido instalado, xpui.bak no se encuentra. `nPor favor, desinstala el cliente de Spotify y ejecuta Install.bat de nuevo"
-    UpdateBlocked   = "Las actualizaciones de Spotify ya están bloqueadas"
-    UpdateError     = "No se han podido bloquear las actualizaciones"
-    NoSpotifyExe    = "No se ha podido encontrar Spotify.exe"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX ya ha sido instalado, xpui.bak no se encuentra. `nPor favor, desinstala el cliente de Spotify y ejecuta Install.bat de nuevo"
     InstallComplete = "Instalación completada"
     HostInfo        = "Se han encontrado URLs no deseadas en el archivo de hosts"
     HostBak         = "Haciendo una copia de seguridad de hosts.bak..."

@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "Упс, нетачна вредност,"
     Incorrect2      = "унесите поново за "
     Download        = "Грешка преузимања"
@@ -15,7 +11,7 @@
     Download4       = "Проверите своје поставке мреже и покрените инсталацију још једном"
     Download5       = "Преузимање Spotify-ја"
     Download6       = "Curl грешка"
-    StopScrpit      = "Скрипта заустављена"
+    StopScript      = "Скрипта заустављена"
     MsSpoti         = "Детектована је верзија Spotify-ја из Microsoft Store-а, што није подржано"
     MsSpoti2        = "Деинсталирати верзију Spotify-ја из Microsoft Store-а? [Y/N]"
     MsSpoti3        = "Аутоматска деинсталација Spotify MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Крпљење Spotify-ја..."
     Error           = "Грешка"
     FileLocBroken   = "Локација фајлова Spotify-ја је нарушена, деинсталирајте клијент, па покрените скрипту поново"
-    Spicetify       = "Детектован је Spicetify"
-    NoRestore       = "SpotX је већ био инсталиран, али резервни фајлови xpui.js.bak и xpui.css.bak нису нађени. `nМолимо деинсталирајте Spotify клијент и покрените Install.bat поново"
-    ExpSpotify      = "Експерименталним могућностима управља Spotify"
-    ExpStandart     = "Експерименталне могућности SpotX-а нису укључене"
-    NoRestore2      = "SpotX је већ био инсталиран, xpui.bak није нађен. `nМолимо деинсталирајте Spotify клијент и покрените Install.bat поново"
-    UpdateBlocked   = "Ажурирања Spotify-ја су већ блокирана"
-    UpdateError     = "Блокирање ажурирања није успело"
-    NoSpotifyExe    = "Spotify.exe није нађен"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX је већ био инсталиран, xpui.bak није нађен. `nМолимо деинсталирајте Spotify клијент и покрените Install.bat поново"
     InstallComplete = "Инсталација завршена"
     HostInfo        = "Нежељени URL-ови нађени у фајлу hosts"
     HostBak         = "Прављење резервне копије hosts.bak..."

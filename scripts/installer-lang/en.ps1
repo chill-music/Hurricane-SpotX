@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "Oops, an incorrect value,"
     Incorrect2      = "enter again through "
     Download        = "Error downloading"
@@ -14,8 +10,7 @@
     Download3       = "Error again"
     Download4       = "Check your network settings and run the installation again"
     Download5       = "Downloading Spotify"
-    Download6       = "Curl error"
-    StopScrpit      = "Script is stopped"
+    StopScript      = "Script is stopped"
     MsSpoti         = "The Microsoft Store version of Spotify has been detected which is not supported"
     MsSpoti2        = "Uninstall Spotify Microsoft Store edition [Y/N]"
     MsSpoti3        = "Automatically uninstalling Spotify MS..."
@@ -41,30 +36,12 @@
     UpdBlock        = "Spotify updates blocked"
     UpdUnblock      = "Spotify updates are not blocked"
     UpdSelect       = "Want to block Spotify updates? [Y/N]"
-    CacheOn         = "Audio cache cleaning is enabled ({0})"
-    CacheOff        = "Audio cache cleaning is not enabled"
-    CacheSelect     = "Do you want to install automatic audio cache cleaning for Spotify? [Y/N]"
-    CacheDays       = "A cache that has not been used for more than the number of days specified by you will be deleted"
-    CacheDays2      = "Enter the number of days from 1 to 100"
     ModSpoti        = "Patching Spotify..."
     Error           = "Error"
     FileLocBroken   = "Location of Spotify files is broken, uninstall Spotify client and run the script again"
-    Spicetify       = "Spicetify detected"
-    NoRestore       = "SpotX has already been installed, but files to recover xpui.js.bak and xpui.css.bak not found. `nPlease uninstall Spotify client and run Install.bat again"
-    ExpSpotify      = "Experimental features operated by Spotify"
-    ExpStandart     = "Experimental features of SpotX are not included"
-    NoRestore2      = "SpotX has already been installed, xpui.bak not found. `nPlease uninstall Spotify client and run Install.bat again"
-    UpdateBlocked   = "Spotify updates are already blocked"
-    UpdateError     = "Failed to block updates"
-    NoSpotifyExe    = "Could not find Spotify.exe"
-    InstallComplete = "
-╔════════════════════════════════════════╗
-║         installation completed         ║
-╚════════════════════════════════════════╝"
-    InstallComplete2 = "
-╔════════════════════════════════════════╗
-║         Patched By: Shehab             ║
-╚════════════════════════════════════════╝"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX has already been installed, xpui.bak not found. `nPlease uninstall Spotify client and run Install.bat again"
+    InstallComplete = "installation completed"
     HostInfo        = "Unwanted URLs found in hosts file"
     HostBak         = "Backing up hosts.bak..."
     HostDel         = "Trying to remove unwanted URLs from the original hosts file..."

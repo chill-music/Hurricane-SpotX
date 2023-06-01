@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════════════╗
+║ Добро пожаловать в SpotX для Windows ║
+╚══════════════════════════════════════╝"
     Incorrect       = "Ой, некорректное значение,"
     Incorrect2      = "повторите ввод через"
     Download        = "Ошибка загрузки"
@@ -14,8 +10,7 @@
     Download3       = "Опять ошибка"
     Download4       = "Проверьте настройки вашей сети и снова запустите установку"
     Download5       = "Загрузка Spotify"
-    Download6       = "Curl error"
-    StopScrpit      = "Cкрипт остановлен"
+    StopScript      = "Cкрипт остановлен"
     MsSpoti         = "Обнаружена версия Spotify из Microsoft Store, которая не поддерживается"
     MsSpoti2        = "Хотите удалить Spotify Microsoft Store ? [Y/N]"
     MsSpoti3        = "Автоматическое удаление Spotify MS..."
@@ -41,22 +36,11 @@
     UpdBlock        = "Обновления Spotify заблокированы"
     UpdUnblock      = "Обновления Spotify не заблокированы"
     UpdSelect       = "Хотите заблокировать обновления Spotify ? [Y/N]"
-    CacheOn         = "Очистка кеша включена ({0})"
-    CacheOff        = "Очистка кеша не включена"
-    CacheSelect     = "Хотите установить автоматическую очистку кеша ? [Y/N]"
-    CacheDays       = "Кэш старше: XX дней будет очищен"
-    CacheDays2      = "Пожалуйста, введите количество дней от 1 до 100"
     ModSpoti        = "Модифицирую Spotify..."
     Error           = "Ошибка"
-    FileLocBroken   = "Расположение файлов Spotify нарушено, удалите клиент и снова запустите скрипт"
-    Spicetify       = "Обнаружен Spicetify"
-    NoRestore       = "SpotX уже был установлен, но файлы для восстановления xpui.js.bak и xpui.css.bak не найдены. `nУдалите клиент Spotify и снова запустите Install.bat"
-    ExpSpotify      = "Экспериментальные функции управляются Spotify"
-    ExpStandart     = "Экспериментальные функции SpotX не включены"
-    NoRestore2      = "SpotX уже был установлен, но файл для восстановления xpui.bak не найден. `nУдалите клиент Spotify и снова запустите Install.bat"
-    UpdateBlocked   = "Обновления Spotify уже заблокированы"
-    UpdateError     = "Не удалось заблокировать обновления"
-    NoSpotifyExe    = "Spotify.exe не найден"
+    FileLocBroken   = "Расположение файлов Spotify нарушено, удалите клиент Spotify и снова запустите скрипт"
+    Spicetify       = "Обнаружен Spicetify, он должен быть установлен после SpotX, открыть рекомендуемые действия в FAQ ? [Y/N]"
+    NoRestore       = "SpotX уже был установлен, но файл для восстановления xpui.bak не найден. `nУдалите клиент Spotify и снова запустите Install.bat"
     InstallComplete = "Установка завершена"
     HostInfo        = "В файле hosts найдены нежелательные Url-адреса"
     HostBak         = "Создаю резервную копию hosts.bak..."

@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔════════════════════════════╗
+║ Witamy w SpotX dla Windows ║
+╚════════════════════════════╝"
     Incorrect       = "Oops, niewłaściwa wartość,"
     Incorrect2      = "Wejdź ponownie przez"
     Download        = "Błąd pobierania"
@@ -15,7 +11,7 @@
     Download4       = "Sprawdź swoje połączenie z siecią i spróbuj ponownie"
     Download5       = "Pobieranie Spotify"
     Download6       = "Błąd Curl"
-    StopScrpit      = "Skrypt wstrzymany"
+    StopScript      = "Skrypt wstrzymany"
     MsSpoti         = "Wersja Spotify ze Sklepu Microsoft została wykryta i nie jest wspierana"
     MsSpoti2        = "Odinstalować wersję Spotify ze Sklepu Microsoft? [Y/N]"
     MsSpoti3        = "Automatyczne odinstalowywanie Spotify z MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Patchowanie Spotify..."
     Error           = "Błąd"
     FileLocBroken   = "Lokalizacje plików Spotify są zepsute, odinstaluj klienta i uruchom ponownie skrypt"
-    Spicetify       = "Spicetify wykryty"
-    NoRestore       = "SpotX został zainstalowany, jednak pliki do odzyskania xpui.js.bak i xpui.css.bak zostały nieznalezione. `nProszę odinstalować klienta i uruchomić Install.bat ponownie"
-    ExpSpotify      = "Eksperymentalne funkcje obsługiwane przez Spotify"
-    ExpStandart     = "Eksperymentalne funkcje SpotX nie są uwzględnione"
-    NoRestore2      = "SpotX został pobrany, ale xpui.bak nie znaleziony. `nProszę odinstalować klienta Spotify i uruchomić Install.bat ponownie"
-    UpdateBlocked   = "Spotify aktualizacje są już zablokowane"
-    UpdateError     = "Nie udało się zablokować aktualizacji"
-    NoSpotifyExe    = "Nie można znaleźć Spotify.exe"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX został pobrany, ale xpui.bak nie znaleziony. `nProszę odinstalować klienta Spotify i uruchomić Install.bat ponownie"
     InstallComplete = "Instalacja została zakończona"
     HostInfo        = "Niepożądane adresy URL znalezione w plikach hosts"
     HostBak         = "Tworzenie kopii zapasowych hosts.bak..."

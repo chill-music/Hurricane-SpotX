@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "Hmm. Nepareiza vērtība,"
     Incorrect2      = "lūdzu ievadiet to vēlreiz "
     Download        = "Kļūda lejuplādējot"
@@ -15,7 +11,7 @@
     Download4       = "Pārbaudi savus tīkla iestatījumus un mēģini instalēt vēlreiz"
     Download5       = "Lejuplādejam Spotify"
     Download6       = "Curl kļūda"
-    StopScrpit      = "Skripts ir apstājies"
+    StopScript      = "Skripts ir apstājies"
     MsSpoti         = "Microsoft veikala Spotify versija tika konstatēta, un nav atbalstīta."
     MsSpoti2        = "Izdzēst Spotify Microsoft Store versiju [Y/N]"
     MsSpoti3        = "Automātiski izdzēš Spotify MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Modo Spotify..."
     Error           = "Kļūda"
     FileLocBroken   = "Spotify failu atrašanās vieta ir bojāta, atinstalējiet klientu un palaidiet skriptu vēlreiz"
-    Spicetify       = "Spicetify konstatēts"
-    NoRestore       = "SpotX ir jau instalēts, bet faili lai atgūtu xpui.js.bak un xpui.css.bak nebija atrasti. `nLūdzu aninstalējiet Spotify klientu un palaidiet Install.bat vēlreiz"
-    ExpSpotify      = "Eksperimentālās funkcijas, kuras operē Spotify"
-    ExpStandart     = "SpotX eksperimentālās funkcijas nav iekļautas"
-    NoRestore2      = "SpotX ir jau instalēts, bet xpui.bak nebija atrasts. `nLūdzu izdzēs Spotify klientu un palaid Install.bat vēlreiz"
-    UpdateBlocked   = "Spotify atjauninājumi ir jau bloķēti"
-    UpdateError     = "Neizdevās bloķēt atjauninājumus"
-    NoSpotifyExe    = "Neizdevās atrast Spotify.exe"
+    Spicetify       = "Spicetify ir konstatēts, to ir jāinstalē pēc SpotX, atvērt piemērotākos darbībus BUJ lapā? [Y/N]"
+    NoRestore       = "SpotX ir jau instalēts, bet xpui.bak nebija atrasts. `nLūdzu izdzēs Spotify klientu un palaid Install.bat vēlreiz"
     InstallComplete = "Instalācija pabeigta"
     HostInfo        = "hosts failā atrasti nevēlami URL"
     HostBak         = "Dublē hosts.bak ..."

@@ -1,11 +1,7 @@
 [PSCustomObject]@{
     Welcome         = "
 ╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
+║ Bine ați venit la SpotX pentru Windows ║
 ╚════════════════════════════════════════╝"
     Incorrect       = "Ups, o valoare incorectă,"
     Incorrect2      = "introduceți din nou prin "
@@ -15,7 +11,7 @@
     Download4       = "Verificați setările de rețea și rulați din nou instalarea"
     Download5       = "Se descarca Spotify"
     Download6       = "Eroare Curl"
-    StopScrpit      = "Scriptul a fost oprit"
+    StopScript      = "Scriptul a fost oprit"
     MsSpoti         = "A fost detectată versiunea Microsoft Store a Spotify, care nu este suportată"
     MsSpoti2        = "Dezinstalati versiunea Microsoft Store a Spotify [Y/N]"
     MsSpoti3        = "Dezinstalare automată a Spotify MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Se patchuiește Spotify..."
     Error           = "Eroare"
     FileLocBroken   = "Locația fișierelor Spotify este stricată, dezinstalați clientul și rulați din nou scriptul"
-    Spicetify       = "Spicetify detectat"
-    NoRestore       = "SpotX a fost deja instalat, dar fișierele de recuperat xpui.js.bak și xpui.css.bak nu au fost găsite. `nVă rugăm să dezinstalați clientul Spotify și să rulați Install.bat din nou"
-    ExpSpotify      = "Funcții experimentale operate de Spotify"
-    ExpStandart     = "Caracteristicile experimentale ale SpotX nu sunt incluse"
-    NoRestore2      = "SpotX a fost deja instalat, xpui.bak nu a fost găsit. `nVă rugăm să dezinstalați clientul Spotify și să rulați din nou Install.bat"
-    UpdateBlocked   = "Actualizările Spotify sunt deja blocate"
-    UpdateError     = "Nu s-a reușit blocarea actualizărilor"
-    NoSpotifyExe    = "Nu s-a putut gasi Spotify.exe"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX a fost deja instalat, xpui.bak nu a fost găsit. `nVă rugăm să dezinstalați clientul Spotify și să rulați din nou Install.bat"
     InstallComplete = "Instalare completă!"
     HostInfo        = "URL-uri nedorite au fost găsite in fișierul hosts"
     HostBak         = "Se efectuează o copie de siguranță a fișierului hosts.bak..."

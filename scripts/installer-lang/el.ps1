@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔══════════════════════════════════════════════╗
-║ Καλώς ήρθατε στο Hurricane-SpotX για Windows ║
-╚══════════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔════════════════════════════════════╗
+║ Καλώς ήρθατε στο SpotX για Windows ║
+╚════════════════════════════════════╝"
     Incorrect       = "Ουπς, μια λανθασμένη τιμή,"
     Incorrect2      = "εισάγετε μια νέα τιμή "
     Download        = "Σφάλμα λήψης"
@@ -15,7 +11,7 @@
     Download4       = "Ελέγξτε τις ρυθμίσεις του δικτύου σας και εκτελέστε ξανά την εγκατάσταση"
     Download5       = "Λήψη Spotify"
     Download6       = "Σφάλμα Curl"
-    StopScrpit      = "Το Script έχει σταματήσει"
+    StopScript      = "Το Script έχει σταματήσει"
     MsSpoti         = "Εντοπίστηκε η έκδοση του Spotify του Microsoft Store η οποία δεν υποστηρίζεται"
     MsSpoti2        = "Απεγκατάσταση Spotify έκδοσης Microsoft Store [Y/N]"
     MsSpoti3        = "Αυτόματη απεγκατάσταση Spotify MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Επιδιόρθωση Spotify..."
     Error           = "Σφάλμα"
     FileLocBroken   = "Η τοποθεσία των αρχείων Spotify είναι κατεστραμμένη, απεγκαταστήστε το πρόγραμμα Spotify και εκτελέστε ξανά το script"
-    Spicetify       = "Εντοπίστηκε το Spicetify"
-    NoRestore       = "Το SpotX έχει ήδη εγκατασταθεί, αλλά αρχεία προς ανάκτηση xpui.js.bak και xpui.css.bak δεν βρέθηκαν. `nΠαρακαλώ απεγκαταστήστε το πρόγραμμα Spotify και εκτελέστε ξανά το Install.bat"
-    ExpSpotify      = "Πειραματικές λειτουργίες που διαχειρίζονται από το Spotify"
-    ExpStandart     = "Οι πειραματικές λειτουργίες του SpotX δεν περιλαμβάνονται"
-    NoRestore2      = "Το SpotX έχει ήδη εγκατασταθεί, το xpui.bak δεν βρέθηκε. `nΠαρακαλώ απεγκαταστήστε το πρόγραμμα Spotify και εκτελέστε ξανά το Install.bat"
-    UpdateBlocked   = "Οι ενημερώσεις του Spotify είναι ήδη αποκλεισμένες"
-    UpdateError     = "Αποτυχία αποκλεισμού ενημερώσεων"
-    NoSpotifyExe    = "Δεν ήταν δυνατή η εύρεση του Spotify.exe"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "Το SpotX έχει ήδη εγκατασταθεί, το xpui.bak δεν βρέθηκε. `nΠαρακαλώ απεγκαταστήστε το πρόγραμμα Spotify και εκτελέστε ξανά το Install.bat"
     InstallComplete = "Η εγκατάσταση ολοκληρώθηκε"
     HostInfo        = "Ανεπιθύμητες διευθύνσεις URL βρέθηκαν στο αρχείο hosts"
     HostBak         = "Δημιουργείται αντίγραφο ασφαλείας hosts.bak..."

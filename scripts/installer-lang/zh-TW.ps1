@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "糟糕, 不正確的參數,"
     Incorrect2      = "請重新輸入 "
     Download        = "下載錯誤"
@@ -15,7 +11,7 @@
     Download4       = "檢查您的網路設定後再次嘗試安裝"
     Download5       = "下載 Spotify"
     Download6       = "Curl 錯誤"
-    StopScrpit      = "腳本已停止"
+    StopScript      = "腳本已停止"
     MsSpoti         = "偵測到不支援的 Spotify 微軟商店版本"
     MsSpoti2        = "解除安裝微軟商店的 Spotify [Y/N]"
     MsSpoti3        = "自動解除安裝 Spotify 的微軟商店版本..."
@@ -49,14 +45,8 @@
     ModSpoti        = "修補 Spotify..."
     Error           = "錯誤"
     FileLocBroken   = "Spotify 檔案已損壞, 請解除安裝客戶端並重新運行腳本"
-    Spicetify       = "偵測到 Spicetify"
-    NoRestore       = "SpotX 已經安裝, 但找不到檔案 xpui.js.bak 和 xpui.css.bak not `n請重新安裝 Spotify 客戶端後再運行 Install.bat"
-    ExpSpotify      = "啟用 Spotify 的實驗性功能Experimental features operated by Spotify"
-    ExpStandart     = "SpotX的實驗性功能沒有啟用"
-    NoRestore2      = "SpotX 已經安裝, 但是找不到xpui.bak `n請重新安裝 Spotify 客戶端後再運行 Install.bat"
-    UpdateBlocked   = "Spotify 更新已經被阻止"
-    UpdateError     = "阻止更新失敗"
-    NoSpotifyExe    = "找不到 Spotify.exe"
+    Spicetify       = "偵測到 Spicetify，它必須在安裝 SpotX 後進行安裝。是否打開 FAQ 中的建議操作？ [Y/N]"
+    NoRestore       = "SpotX 已經安裝, 但是找不到xpui.bak `n請重新安裝 Spotify 客戶端後再運行 Install.bat"
     InstallComplete = "安裝完成"
     HostInfo        = "在 hosts 檔案中發現不需要的 URL"
     HostBak         = "備份原始 hosts 檔案為 hosts.bak..."

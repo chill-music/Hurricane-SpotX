@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════════════╗
+║ Ласкаво просимо до SpotX для Windows ║
+╚══════════════════════════════════════╝"
     Incorrect       = "Упс, некоректне значення,"
     Incorrect2      = "введіть знову через "
     Download        = "Помилка завантаження"
@@ -15,7 +11,7 @@
     Download4       = "Перевірте налаштування вашого з'єднання та запустіть інсталятор знову"
     Download5       = "Завантаження Spotify"
     Download6       = "Помилка Curl"
-    StopScrpit      = "Скрипт зупинено"
+    StopScript      = "Скрипт зупинено"
     MsSpoti         = "Знайдено версію Spotify з Microsoft Store, яка не підтримується"
     MsSpoti2        = "Видалити версію Spotify з Microsoft Store [Y/N]"
     MsSpoti3        = "Автоматичне видалення Spotify MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Встановлення патчів на Spotify..."
     Error           = "Помилка"
     FileLocBroken   = "Помилки у шляху до файлів Spotify, видаліть клієнт та запустіть скрипт ще раз."
-    Spicetify       = "Знайдено Spicetify"
-    NoRestore       = "SpotX вже встановлено, але файли recover xpui.js.bak and xpui.css.bak не знайдені. `nБудь-ласка, видаліть клієнт Spotify та запустіть скрипт ще раз."
-    ExpSpotify      = "Експериментальні функції відSpotify"
-    ExpStandart     = "Експериментальні функції від SpotX не включено"
-    NoRestore2      = "SpotX вже встановлено, але файл xpui.bak не знайдено. `nБудь-ласка, видаліть клієнт Spotify та запустіть скрипт ще раз."
-    UpdateBlocked   = "Оновлення Spotify вже заблоковані"
-    UpdateError     = "Помилка при блокуванні оновлень"
-    NoSpotifyExe    = "Не вдалося знайти Spotify.exe"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX вже встановлено, але файл xpui.bak не знайдено. `nБудь-ласка, видаліть клієнт Spotify та запустіть скрипт ще раз."
     InstallComplete = "встановлення завершене"
     HostInfo        = "Небажані посилання знайдені у файлі hosts"
     HostBak         = "Бекап hosts.bak..."

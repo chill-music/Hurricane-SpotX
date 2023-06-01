@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX for Windows ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════╗
+║ Welcome to SpotX for Windows ║
+╚══════════════════════════════╝"
     Incorrect       = "უპს, არასწორი შენატანი,"
     Incorrect2      = "მაგრამ თავიდან სცადე"
     Download        = "შეცდომა ჩაწერის დროს"
@@ -15,7 +11,7 @@
     Download4       = "შეამოწმეთ თქვენი კავშირი ქსელთან და თავიდან სცადე ინსტალაცია"
     Download5       = "Spotify იწერება"
     Download6       = "Curl error" #
-    StopScrpit      = "სკრიპტი ჩერდება"
+    StopScript      = "სკრიპტი ჩერდება"
     MsSpoti         = "Microsoft Store-ის ვერსია მოიძებნა რომელიც არ არის მხარდაჯერილი" 
     MsSpoti2        = "წავშალოთ Spotify Microsoft Store-ის ვერსია [Y/N]"
     MsSpoti3        = "ავტუმატურად იშლება Spotify MS..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Spotify იკერვება..."
     Error           = "შეცდომა"
     FileLocBroken   = "Spotify ფაილების ლოკაცია არის გადეხილი, წაშალეთ კლიენტი და თავიდან გაუშვით სკრიპტი"
-    Spicetify       = "Spicetify მოიზებნა"
-    NoRestore       = "SpotX უკვეა ჩაწერილი, მაგრამ ფაილები xpui.js.bak და xpui.css.bak აღსადგენად ვერ მოიძებნა. `nგთხოვთ წაშალეთ Spotify-ის აპლიკაცია და თავიდან გაუშვით Install.bat"
-    ExpSpotify      = "ექსპერიმენტული ფუნქციები, რომელსაც მართავს Spotify"
-    ExpStandart     = "ექსპერიმენტული ფუნქციები SpotX არ მოითავსება"
-    NoRestore2      = "SpotX უკვე დაინსტალირებულია, xpui.bak ვერ მოიძებნა. `nგთხოვთ, წაშალოთ Spotify აპლიკაცია და თავიდან გაუშვით Install.bat"
-    UpdateBlocked   = "Spotify-ს განახლებები უკვე დაბლოკერიბული არიან"
-    UpdateError     = "განახლებების დაბლოკვა ვერ მოხერხდა"
-    NoSpotifyExe    = "Spotify.exe ვერ მოიძებნა"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX უკვე დაინსტალირებულია, xpui.bak ვერ მოიძებნა. `nგთხოვთ, წაშალოთ Spotify აპლიკაცია და თავიდან გაუშვით Install.bat"
     InstallComplete = "ინსტალაცია დასრულდა"
     HostInfo        = "არასასურველი URL-ები ნაპოვნი მასპინძელის ფაილში"
     HostBak         = "იქმნება hosts.bak-ის სარევეზნო ასლი..."

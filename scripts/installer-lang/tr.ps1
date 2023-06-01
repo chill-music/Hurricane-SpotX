@@ -1,12 +1,8 @@
 [PSCustomObject]@{
     Welcome         = "
-╔════════════════════════════════════════╗
-║ Welcome to Hurricane-SpotX Hoşgeldiniz ║
-╚════════════════════════════════════════╝"
-    Welcome2        = "
-╔════════════════════════════════════════╗
-║         Patch author: @Shehab          ║
-╚════════════════════════════════════════╝"
+╔══════════════════════════════════╗
+║ Windows için SpotX'e Hoşgeldiniz ║
+╚══════════════════════════════════╝"
     Incorrect       = "Eyvah, yanlış bir değer,"
     Incorrect2      = "tekrar girin "
     Download        = "İndirirken hata oluştu"
@@ -15,7 +11,7 @@
     Download4       = "Ağ ayarlarınızı kontrol edin ve kurulumu tekrar çalıştırın"
     Download5       = "Spotify indiriliyor"
     Download6       = "Curl hatası"
-    StopScrpit      = "Komut dosyası durduruldu"
+    StopScript      = "Komut dosyası durduruldu"
     MsSpoti         = "Spotify'ın desteklenmeyen Microsoft Store sürümü tespit edildi"
     MsSpoti2        = "Spotify'ın Microsoft Store sürümünü kaldır [Y/N]"
     MsSpoti3        = "Spotify MS otomatik olarak kaldırlıyor..."
@@ -49,14 +45,8 @@
     ModSpoti        = "Spotify'a yama yapılıyor..."
     Error           = "Hata"
     FileLocBroken   = "Spotify dosyalarının konumu bozuk, istemciyi kaldırın ve kodu tekrar çalıştırın"
-    Spicetify       = "Spicetify algılandı"
-    NoRestore       = "SpotX zaten yüklenmiş, ancak xpui.js.bak ve xpui.css.bak dosyalarının bulunamadığı tespit edildi. `nLütfen Spotify istemcisini kaldırın ve Install.bat dosyasını tekrar çalıştırın"
-    ExpSpotify      = "Spotify tarafından sunulan deneysel özellikler"
-    ExpStandart     = "SpotX'in deneysel özellikleri dahil değildir"
-    NoRestore2      = "SpotX zaten kurulmuş, xpui.bak dosyası bulunamadı. `nLütfen Spotify istemcisini kaldırın ve Install.bat dosyasını tekrar çalıştırın"
-    UpdateBlocked   = "Spotify güncellemeleri zaten engellenmiş durumda"
-    UpdateError     = "Güncellemeler engellenemedi"
-    NoSpotifyExe    = "Spotify.exe bulunamadı"
+    Spicetify       = "Spicetify detected, it must be installed after SpotX, open recommended actions in FAQ ? [Y/N]"
+    NoRestore       = "SpotX zaten kurulmuş, xpui.bak dosyası bulunamadı. `nLütfen Spotify istemcisini kaldırın ve Install.bat dosyasını tekrar çalıştırın"
     InstallComplete = "kurulum tamamlandı"
     HostInfo        = "Hosts dosyasında istenmeyen URL'ler bulundu"
     HostBak         = "hosts.bak dosyası yedekleniyor...."

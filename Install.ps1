@@ -15,14 +15,9 @@ param
     [Parameter(HelpMessage = 'Do not block Spotify automatic updates.')]
     [switch]$block_update_off,
     
-    [Parameter(HelpMessage = 'Enable clear cache.')]
-    [switch]$cache_on,
-    
-    [Parameter(HelpMessage = 'Specify the number of days. Default is 7 days.')]
-    [int16]$number_days = 7,
-    
-    [Parameter(HelpMessage = 'Do not enable cache clearing.')]
-    [switch]$cache_off,
+    [Parameter(HelpMessage = 'Change limit for clearing audio cache.')]
+    [Alias('cl')]
+    [int]$cache_limit,
     
     [Parameter(HelpMessage = 'Automatic uninstallation of Spotify MS if it was found.')]
     [switch]$confirm_uninstall_ms_spoti,
@@ -41,45 +36,27 @@ param
     
     [Parameter(HelpMessage = 'Experimental features operated by Spotify.')]
     [switch]$exp_spotify,
-
-    [Parameter(HelpMessage = 'Experimental features of SpotX are not included')]
-    [switch]$exp_standart,
     
     [Parameter(HelpMessage = 'Do not hide the icon of collaborations in playlists.')]
     [switch]$hide_col_icon_off,
-    
-    [Parameter(HelpMessage = 'Do not enable the Made For You button on the left sidebar.')]
-    [switch]$made_for_you_off,
     
     [Parameter(HelpMessage = 'Do not enable enhance playlist.')]
     [switch]$enhance_playlist_off,
     
     [Parameter(HelpMessage = 'Do not enable enhance liked songs.')]
     [switch]$enhance_like_off,
-    
-    [Parameter(HelpMessage = 'Do not enable new discography on artist.')]
-    [switch]$new_artist_pages_off,
-    
-    [Parameter(HelpMessage = 'Do not enable new lyrics.')]
-    [switch]$new_lyrics_off,
-    
-    [Parameter(HelpMessage = 'Do not enable exception playlists from recommendations.')]
-    [switch]$ignore_in_recommendations_off,
-
-    [Parameter(HelpMessage = 'Enable audio equalizer for Desktop.')]
-    [switch]$equalizer_off,
-    
-    [Parameter(HelpMessage = 'Return the old device picker')]
-    [switch]$device_picker_old,
 
     [Parameter(HelpMessage = 'New theme activated (new right and left sidebar, some cover change)')]
     [switch]$new_theme,
+
+    [Parameter(HelpMessage = 'enable right sidebar coloring to match cover color)')]
+    [switch]$rightsidebarcolor,
+    
+    [Parameter(HelpMessage = 'Returns old lyrics')]
+    [switch]$old_lyrics,
     
     [Parameter(HelpMessage = 'Do not create desktop shortcut.')]
     [switch]$no_shortcut,
-    
-    [Parameter(HelpMessage = 'Use bts patch.')]
-    [switch]$bts,
 
     [Parameter(HelpMessage = 'Static color for lyrics.')]
     [string]$lyrics_stat,
@@ -113,7 +90,7 @@ function Format-LanguageCode {
     
     
     $supportLanguages = @(
-        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv', 'bn', 'el', 'fi'
+        'en', 'ru', 'it', 'tr', 'ka', 'pl', 'es', 'fr', 'hi', 'pt', 'id', 'vi', 'ro', 'de', 'hu', 'zh', 'zh-TW', 'ko', 'ua', 'fa', 'sr', 'lv', 'bn', 'el', 'fi', 'ja', 'fil'
     )
     
     
@@ -215,8 +192,17 @@ function Format-LanguageCode {
             $returnCode = 'el'
             break
         }
-        '^fi' {
+        '^fi$' {
             $returnCode = 'fi'
+            break
+        }
+        '^ja' {
+            $returnCode = 'ja'
+            break
+        
+        }
+        '^fil' {
+            $returnCode = 'fil'
             break
         }
         Default {
@@ -228,7 +214,7 @@ function Format-LanguageCode {
         
     # Checking the long language code
     if ($long_code -and $returnCode -NotIn $supportLanguages) {
-        $returnCode = $PSUICulture.Remove(2)
+        $returnCode = $returnCode -split "-" | Select-Object -First 1
     }
     # Checking the short language code
     if ($returnCode -NotIn $supportLanguages) {
@@ -237,6 +223,58 @@ function Format-LanguageCode {
     }
     return $returnCode 
 }
+
+$spotifyDirectory = Join-Path $env:APPDATA 'Spotify'
+$spotifyDirectory2 = Join-Path $env:LOCALAPPDATA 'Spotify'
+$spotifyExecutable = Join-Path $spotifyDirectory 'Spotify.exe'
+$exe_bak = Join-Path $spotifyDirectory 'Spotify.bak'
+$spotifyUninstall = Join-Path $env:TEMP 'SpotifyUninstall.exe'
+$start_menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Spotify.lnk'
+
+$upgrade_client = $false
+
+# Check version Windows
+$os = Get-CimInstance -ClassName "Win32_OperatingSystem" -ErrorAction SilentlyContinue
+if ($os) {
+    $osCaption = $os.Caption
+}
+else {
+    $osCaption = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName
+}
+$pattern = "\bWindows (7|8(\.1)?|10|11|12)\b"
+$reg = [regex]::Matches($osCaption, $pattern)
+$win_os = $reg.Value
+
+$win12 = $win_os -match "\windows 12\b"
+$win11 = $win_os -match "\windows 11\b"
+$win10 = $win_os -match "\windows 10\b"
+$win8_1 = $win_os -match "\windows 8.1\b"
+$win8 = $win_os -match "\windows 8\b"
+$win7 = $win_os -match "\windows 7\b"
+
+# Recommended version for Win 7-8.1
+if ($win7 -or $win8 -or $win8_1) { 
+    $onlineFull = "1.2.5.1006.g22820f93-1078"
+}
+# Recommended version for Win 10-12
+else {  
+    $onlineFull = "1.2.12.902.g1924b088-3133" 
+}
+
+$online = ($onlineFull -split ".g")[0]
+
+# Check version Powershell
+$psv = $PSVersionTable.PSVersion.major
+if ($psv -ge 7) {
+    Import-Module Appx -UseWindowsPowerShell -WarningAction:SilentlyContinue
+}
+
+# Country check
+$country = [System.Globalization.RegionInfo]::CurrentRegion.EnglishName
+
+# add Tls12
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 
 function CallLang($clg) {
 
@@ -253,7 +291,6 @@ function CallLang($clg) {
         Exit
     }
 }
-
 
 
 # Set language code for script.
@@ -286,15 +323,6 @@ catch {
     catch { }
 }
 
-$spotifyDirectory = "$env:APPDATA\Spotify"
-$spotifyDirectory2 = "$env:LOCALAPPDATA\Spotify"
-$spotifyExecutable = "$spotifyDirectory\Spotify.exe"
-$exe_bak = "$spotifyDirectory\Spotify.bak"
-$cache_folder = "$env:APPDATA\Spotify\cache"
-$spotifyUninstall = "$env:TEMP\SpotifyUninstall.exe"
-$start_menu = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Spotify.lnk"
-$upgrade_client = $false
-
 function incorrectValue {
 
     Write-Host ($lang).Incorrect"" -ForegroundColor Red -NoNewline
@@ -309,80 +337,56 @@ function incorrectValue {
     Clear-Host
 } 
 
-function unlockFolder {
+function Unlock-Folder {
+    $blockFileUpdate = Join-Path $env:LOCALAPPDATA 'Spotify\Update'
 
-    $ErrorActionPreference = 'SilentlyContinue'
-    $block_File_update = "$env:LOCALAPPDATA\Spotify\Update"
-    $Check_folder = Get-ItemProperty -Path $block_File_update | Select-Object Attributes 
-    $folder_update_access = Get-Acl $block_File_update
-
-    # Check folder Update if it exists
-    if ($Check_folder -match '\bDirectory\b') {  
-
-        # If the rights of the Update folder are blocked, then unblock 
-        if ($folder_update_access.AccessToString -match 'Deny') {
-                ($ACL = Get-Acl $block_File_update).access | ForEach-Object {
-                $Users = $_.IdentityReference 
-                $ACL.PurgeAccessRules($Users) }
-            $ACL | Set-Acl $block_File_update
+    if (Test-Path $blockFileUpdate -PathType Container) {
+        $folderUpdateAccess = Get-Acl $blockFileUpdate
+        $hasDenyAccessRule = $false
+        
+        foreach ($accessRule in $folderUpdateAccess.Access) {
+            if ($accessRule.AccessControlType -eq 'Deny') {
+                $hasDenyAccessRule = $true
+                $folderUpdateAccess.RemoveAccessRule($accessRule)
+            }
+        }
+        
+        if ($hasDenyAccessRule) {
+            Set-Acl $blockFileUpdate $folderUpdateAccess
         }
     }
-}     
+}
 
-function downloadScripts($param1) {
+function downloadSp() {
 
     $webClient = New-Object -TypeName System.Net.WebClient
 
-    if ($param1 -eq "Desktop") {
-        Import-Module BitsTransfer
+    Import-Module BitsTransfer
         
-        $links = "https://download.scdn.co/upgrade/client/win32-x86/spotify_installer-$onlineFull.exe"
-    }
-    if ($ru -and $param1 -eq "cache-spotify") {
-        $links2 = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/cache_spotify_ru.ps1"
-    }
-    if (!($ru) -and $param1 -eq "cache-spotify" ) { 
-        $links2 = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/cache_spotify.ps1"
-    }
+    $web_Url = "https://download.scdn.co/upgrade/client/win32-x86/spotify_installer-$onlineFull.exe"
+    $local_Url = "$PWD\SpotifySetup.exe" 
+    $web_name_file = "SpotifySetup.exe"
+
+    try { if (curl.exe -V) { $curl_check = $true } }
+    catch { $curl_check = $false }
     
-    $web_Url_prev = "https://github.com/mrpond/BlockTheSpot/releases/latest/download/chrome_elf.zip", $links, `
-        $links2, "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/hide_window.vbs", `
-        "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/scripts/cache/run_ps.bat"
-
-    $local_Url_prev = "$PWD\chrome_elf.zip", "$PWD\SpotifySetup.exe", "$cache_folder\cache_spotify.ps1", "$cache_folder\hide_window.vbs", "$cache_folder\run_ps.bat"
-    $web_name_file_prev = "chrome_elf.zip", "SpotifySetup.exe", "cache_spotify.ps1", "hide_window.vbs", "run_ps.bat"
-
-    switch ( $param1 ) {
-        "BTS" { $web_Url = $web_Url_prev[0]; $local_Url = $local_Url_prev[0]; $web_name_file = $web_name_file_prev[0] }
-        "Desktop" { $web_Url = $web_Url_prev[1]; $local_Url = $local_Url_prev[1]; $web_name_file = $web_name_file_prev[1] }
-        "cache-spotify" { $web_Url = $web_Url_prev[2]; $local_Url = $local_Url_prev[2]; $web_name_file = $web_name_file_prev[2] }
-        "hide_window" { $web_Url = $web_Url_prev[3]; $local_Url = $local_Url_prev[3]; $web_name_file = $web_name_file_prev[3] }
-        "run_ps" { $web_Url = $web_Url_prev[4]; $local_Url = $local_Url_prev[4]; $web_name_file = $web_name_file_prev[4] } 
-    }
-
-    if ($param1 -eq "Desktop") {
-        try { if (curl.exe -V) { $curl_check = $true } }
-        catch { $curl_check = $false }
-    }
     try { 
-        if ($param1 -eq "Desktop" -and $curl_check) {
+        if ($curl_check) {
             $stcode = curl.exe -s -w "%{http_code}" -o /dev/null $web_Url --retry 2 --ssl-no-revoke
-            if ($stcode -ne "200") { throw ($lang).Download6 }
+            if ($stcode -ne "200") {
+                Write-Host "Curl error code: $stcode"; throw
+            }
             curl.exe $web_Url -o $local_Url --progress-bar --retry 3 --ssl-no-revoke
             return
         }
-        if ($param1 -eq "Desktop" -and !($curl_check ) -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable)) {
+        if (!($curl_check ) -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable)) {
             $ProgressPreference = 'Continue'
             Start-BitsTransfer -Source  $web_Url -Destination $local_Url  -DisplayName ($lang).Download5 -Description "$online "
             return
         }
-        if ($param1 -eq "Desktop" -and !($curl_check ) -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable)) {
+        if (!($curl_check ) -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable)) {
             $webClient.DownloadFile($web_Url, $local_Url) 
             return
-        }
-        if ($param1 -ne "Desktop") {
-            $ProgressPreference = 'SilentlyContinue' # Hiding Progress Bars
-            $webClient.DownloadFile($web_Url, $local_Url) 
         }
     }
 
@@ -395,24 +399,22 @@ function downloadScripts($param1) {
         Start-Sleep -Milliseconds 5000 
         try { 
 
-            if ($param1 -eq "Desktop" -and $curl_check) {
+            if ($curl_check) {
                 $stcode = curl.exe -s -w "%{http_code}" -o /dev/null $web_Url --retry 2 --ssl-no-revoke
-                if ($stcode -ne "200") { throw ($lang).Download6 }
+                if ($stcode -ne "200") {
+                    Write-Host "Curl error code: $stcode"; throw
+                }
                 curl.exe $web_Url -o $local_Url --progress-bar --retry 3 --ssl-no-revoke
                 return
             }
-            if ($param1 -eq "Desktop" -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
-                Start-BitsTransfer -Source  $web_Url -Destination $local_Url  -DisplayName ($lang).Download5 -Description "$vernew "
+            if (!($curl_check ) -and $null -ne (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
+                Start-BitsTransfer -Source  $web_Url -Destination $local_Url  -DisplayName ($lang).Download5 -Description "$online "
                 return
             }
-            if ($param1 -eq "Desktop" -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
+            if (!($curl_check ) -and $null -eq (Get-Module -Name BitsTransfer -ListAvailable) -and !($curl_check )) {
                 $webClient.DownloadFile($web_Url, $local_Url) 
                 return
             }
-            if ($param1 -ne "Desktop") {
-                $webClient.DownloadFile($web_Url, $local_Url) 
-            }
-
         }
         
         catch {
@@ -420,7 +422,7 @@ function downloadScripts($param1) {
             $Error[0].Exception
             Write-Host ""
             Write-Host ($lang).Download4`n
-            ($lang).StopScrpit
+            ($lang).StopScript
             $tempDirectory = $PWD
             Pop-Location
             Start-Sleep -Milliseconds 200
@@ -434,7 +436,6 @@ function downloadScripts($param1) {
 function DesktopFolder {
 
     # If the default Dekstop folder does not exist, then try to find it through the registry.
-    
     $ErrorActionPreference = 'SilentlyContinue' 
     if (Test-Path "$env:USERPROFILE\Desktop") {  
         $desktop_folder = "$env:USERPROFILE\Desktop"  
@@ -449,35 +450,11 @@ function DesktopFolder {
     return $desktop_folder
 }
 
-# Recommended version for spotx
-$onlineFull = "1.2.4.905.gaf3b1e64-104"
-$online = ($onlineFull -split ".g")[0]
+taskkill /f /im Spotify.exe /t > $null 2>&1
 
-# Check version Spotify offline
-$offline = (Get-Item $spotifyExecutable).VersionInfo.FileVersion
+# Remove Spotify Windows Store If Any
+if ($win10 -or $win11 -or $win8_1 -or $win8 -or $win12) {
 
-# Check version Spotify.bak
-$offline_bak = (Get-Item $exe_bak).VersionInfo.FileVersion
-
-# add Tls12
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-Stop-Process -Name Spotify
-$psv = $PSVersionTable.PSVersion.major
-if ($psv -ge 7) {
-    Import-Module Appx -UseWindowsPowerShell -WarningAction:SilentlyContinue
-}
-
-# Check version Windows
-$win_os = (get-itemproperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName).ProductName
-$win11 = $win_os -match "\windows 11\b"
-$win10 = $win_os -match "\windows 10\b"
-$win8_1 = $win_os -match "\windows 8.1\b"
-$win8 = $win_os -match "\windows 8\b"
-
-if ($win11 -or $win10 -or $win8_1 -or $win8) {
-
-    # Remove Spotify Windows Store If Any
     if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic) {
         Write-Host ($lang).MsSpoti`n
         
@@ -500,7 +477,7 @@ if ($win11 -or $win10 -or $win8_1 -or $win8) {
             Get-AppxPackage -Name SpotifyAB.SpotifyMusic | Remove-AppxPackage
         }
         if ($ch -eq 'n') {
-            Read-Host ($lang).StopScrpit 
+            Read-Host ($lang).StopScript 
             Pause
             Exit
         }
@@ -508,27 +485,35 @@ if ($win11 -or $win10 -or $win8_1 -or $win8) {
 }
 
 # Attempt to fix the hosts file
-$pathHosts = "$Env:windir\System32\Drivers\Etc\hosts"
-$pathHosts_bak = "$Env:windir\System32\Drivers\Etc\hosts.bak"
-$ErrorActionPreference = 'SilentlyContinue'
-$testHosts = Test-Path -Path $pathHosts
+$hostsFilePath = Join-Path $Env:windir 'System32\Drivers\Etc\hosts'
+$hostsBackupFilePath = Join-Path $Env:windir 'System32\Drivers\Etc\hosts.bak'
 
-if ($testHosts) {
-    $hosts = Get-Content -Path $pathHosts
+if (Test-Path -Path $hostsFilePath) {
+    $hosts = Get-Content -Path $hostsFilePath
 
     if ($hosts -match '^[^\#|].+scdn.+|^[^\#|].+spotify.+') {
         Write-Host ($lang).HostInfo
         Write-Host ($lang).HostBak
-        copy-Item $pathHosts $pathHosts_bak
-        Write-Host ($lang).HostDel`n       
 
-        try {
-            $hosts = $hosts -replace '^[^\#|].+scdn.+|^[^\#|].+spotify.+', ''
-            Set-Content -Path $pathHosts -Value $hosts -Force
-            $hosts | Where-Object { $_.trim() -ne "" } | Set-Content -Path $pathHosts -Force
+        Copy-Item -Path $hostsFilePath -Destination $hostsBackupFilePath -ErrorAction SilentlyContinue
+
+        if ($?) {
+            Write-Host ($lang).HostDel
+            try {
+                $hosts = $hosts -replace '^[^\#|].+scdn.+|^[^\#|].+spotify.+', ''
+                $hosts = $hosts | Where-Object { $_.trim() -ne "" }
+                Set-Content -Path $hostsFilePath -Value $hosts -Force
+            }
+            catch {
+                Write-Host ($lang).HostError -ForegroundColor Red
+                $copyError = $Error[0]
+                Write-Host "Error: $($copyError.Exception.Message)" -ForegroundColor Red
+            }
         }
-        catch {
+        else {
             Write-Host ($lang).HostError`n -ForegroundColor Red
+            $copyError = $Error[0]
+            Write-Host "Error: $($copyError.Exception.Message)`n" -ForegroundColor Red
         }
     }
 }
@@ -540,20 +525,33 @@ New-Item -Type Directory -Name "SpotX_Temp-$(Get-Date -UFormat '%Y-%m-%d_%H-%M-%
 if ($premium) {
     Write-Host ($lang).Prem`n
 }
-if (!($premium) -and $bts) {
-    downloadScripts -param1 "BTS"
-    Add-Type -Assembly 'System.IO.Compression.FileSystem'
-    $zip = [System.IO.Compression.ZipFile]::Open("$PWD\chrome_elf.zip", 'read')
-    [System.IO.Compression.ZipFileExtensions]::ExtractToDirectory($zip, $PWD)
-    $zip.Dispose()
-}
 
 $spotifyInstalled = (Test-Path -LiteralPath $spotifyExecutable)
 
 if ($spotifyInstalled) {
+    
+    # Check version Spotify offline
+    $offline = (Get-Item $spotifyExecutable).VersionInfo.FileVersion
+ 
+    # Version comparison
+    # converting strings to arrays of numbers using the -split operator and a ForEach-Object loop
+    $arr1 = $online -split '\.' | ForEach-Object { [int]$_ }
+    $arr2 = $offline -split '\.' | ForEach-Object { [int]$_ }
+
+    # compare each element of the array in order from most significant to least significant.
+    for ($i = 0; $i -lt $arr1.Length; $i++) {
+        if ($arr1[$i] -gt $arr2[$i]) {
+            $oldversion = $true
+            break
+        }
+        elseif ($arr1[$i] -lt $arr2[$i]) {
+            $testversion = $true
+            break
+        }
+    }
 
     # Old version Spotify
-    if ($online -gt $offline) {
+    if ($oldversion) {
         if ($confirm_spoti_recomended_over -or $confirm_spoti_recomended_unistall) {
             Write-Host ($lang).OldV`n
         }
@@ -589,7 +587,7 @@ if ($spotifyInstalled) {
             if ($confirm_spoti_recomended_over) { $ch = 'n' }
             if ($ch -eq 'y') {
                 Write-Host ($lang).DelOld`n 
-                unlockFolder
+                Unlock-Folder | Out-Null
                 cmd /c $spotifyExecutable /UNINSTALL /SILENT
                 wait-process -name SpotifyUninstall
                 Start-Sleep -Milliseconds 200
@@ -605,7 +603,7 @@ if ($spotifyInstalled) {
     }
     
     # Unsupported version Spotify
-    if ($online -lt $offline) {
+    if ($testversion) {
         # Submit unsupported version of Spotify to google form for further processing
         try { 
             $txt = [IO.File]::ReadAllText($spotifyExecutable)
@@ -615,13 +613,14 @@ if ($spotifyInstalled) {
             if ($version.Count -gt 1) { $version = $version[0] }
 
             $Parameters = @{
-                Uri    = 'https://docs.google.com/forms/d/e/1FAIpQLSegGsAgilgQ8Y36uw-N7zFF6Lh40cXNfyl1ecHPpZcpD8kdHg/formResponse'
+                Uri    = 'https://docs.google.com/spreadsheets/d/15jjY_pcW51uYOzZlCaRw7SRb1g1nkLdkTp2xZYTx1tw/edit#gid=2008828862'
                 Method = 'POST'
                 Body   = @{
                     'entry.620327948'  = $version
+                    'entry.1951747592' = $country
                     'entry.1402903593' = $win_os
                     'entry.860691305'  = $psv
-                    'entry.2067427976' = $online + " меньше чем " + $offline
+                    'entry.2067427976' = $online + " < " + $offline
                 }   
             }
             Invoke-WebRequest -useb @Parameters | Out-Null
@@ -679,7 +678,7 @@ if ($spotifyInstalled) {
                 if ($confirm_spoti_recomended_over) { $ch = 'n' }
                 if ($ch -eq 'y') {
                     Write-Host ($lang).DelNew`n
-                    unlockFolder
+                    Unlock-Folder | Out-Null
                     cmd /c $spotifyExecutable /UNINSTALL /SILENT
                     wait-process -name SpotifyUninstall
                     Start-Sleep -Milliseconds 200
@@ -691,7 +690,7 @@ if ($spotifyInstalled) {
             }
 
             if ($ch -eq 'n') {
-                Write-Host ($lang).StopScrpit
+                Write-Host ($lang).StopScript
                 $tempDirectory = $PWD
                 Pop-Location
                 Start-Sleep -Milliseconds 200
@@ -711,15 +710,15 @@ if (-not $spotifyInstalled -or $upgrade_client) {
     
     # Delete old version files of Spotify before installing, leave only profile files
     $ErrorActionPreference = 'SilentlyContinue'
-    Stop-Process -Name Spotify 
+    taskkill /f /im Spotify.exe /t > $null 2>&1
     Start-Sleep -Milliseconds 600
-    unlockFolder
+    Unlock-Folder | Out-Null
     Start-Sleep -Milliseconds 200
-    Get-ChildItem $spotifyDirectory -Exclude 'Users', 'prefs', 'cache' | Remove-Item -Recurse -Force 
+    Get-ChildItem $spotifyDirectory -Exclude 'Users', 'prefs' | Remove-Item -Recurse -Force 
     Start-Sleep -Milliseconds 200
 
     # Client download
-    downloadScripts -param1 "Desktop"
+    downloadSp
     Write-Host ""
 
     Start-Sleep -Milliseconds 200
@@ -728,7 +727,8 @@ if (-not $spotifyInstalled -or $upgrade_client) {
     Start-Process -FilePath explorer.exe -ArgumentList $PWD\SpotifySetup.exe
     while (-not (get-process | Where-Object { $_.ProcessName -eq 'SpotifySetup' })) {}
     wait-process -name SpotifySetup
-    Stop-Process -Name Spotify
+    taskkill /f /im Spotify.exe /t > $null 2>&1
+
 
     # Upgrade check version Spotify offline
     $offline = (Get-Item $spotifyExecutable).VersionInfo.FileVersion
@@ -736,6 +736,8 @@ if (-not $spotifyInstalled -or $upgrade_client) {
     # Upgrade check version Spotify.bak
     $offline_bak = (Get-Item $exe_bak).VersionInfo.FileVersion
 }
+
+
 
 # Delete Spotify shortcut if it is on desktop
 if ($no_shortcut) {
@@ -801,59 +803,32 @@ if ($ch -eq 'n') {
 
 $ch = $null
 
-if ($cache_on) { 
-    Write-Host (($lang).CacheOn -f $number_days)`n 
-    $cache_install = $true
-}
-if ($cache_off) { 
-    Write-Host ($lang).CacheOff`n
-    $ErrorActionPreference = 'SilentlyContinue'
-    $desktop_folder = DesktopFolder
-    if (Test-Path -LiteralPath $cache_folder) {
-        remove-item $cache_folder -Recurse -Force
-        remove-item $desktop_folder\Spotify.lnk -Recurse -Force
-        remove-item $start_menu -Recurse -Force
-    } 
-}
-if (!($cache_on) -and !($cache_off)) {
-
-    do {
-        $ch = Read-Host -Prompt ($lang).CacheSelect
-        Write-Host ""
-        if (!($ch -eq 'n' -or $ch -eq 'y')) { incorrectValue }
-    }
-    while ($ch -notmatch '^y$|^n$')
-
-    if ($ch -eq 'y') {
-        $cache_install = $true 
-
-        do {
-            Write-Host ($lang).CacheDays
-            $ch = Read-Host -Prompt ($lang).CacheDays2
-            Write-Host ""
-            if (!($ch -match "^[1-9][0-9]?$|^100$")) { incorrectValue }
-        }
-        while ($ch -notmatch '^[1-9][0-9]?$|^100$')
-
-        if ($ch -match "^[1-9][0-9]?$|^100$") { $number_days = $ch }
-    }
-    if ($ch -eq 'n') {
-        $ErrorActionPreference = 'SilentlyContinue'
-        $desktop_folder = DesktopFolder
-        if (Test-Path -LiteralPath $cache_folder) {
-            remove-item $cache_folder -Recurse -Force
-            remove-item $desktop_folder\Spotify.lnk -Recurse -Force
-            remove-item $start_menu -Recurse -Force
-        }
-    }
-}
-
-if ($exp_standart) { Write-Host ($lang).ExpStandart`n }
-if ($exp_spotify) { Write-Host ($lang).ExpSpotify`n }
-
 $url = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/main/patches/patches.json"
-$webjson = (Invoke-WebRequest -useb -Uri $url).Content | ConvertFrom-Json
+$retries = 0
 
+while ($retries -lt 3) {
+    try {
+        $webjson = Invoke-WebRequest -UseBasicParsing -Uri $url | ConvertFrom-Json
+        break
+    }
+    catch {
+        Write-Warning "Request failed: $_"
+        $retries++
+        Start-Sleep -Seconds 3
+    }
+}
+
+if ($retries -eq 3) {
+
+    Write-Host "Failed to get patches.json" -ForegroundColor Red
+    Write-Host ($lang).StopScript
+    $tempDirectory = $PWD
+    Pop-Location
+    Start-Sleep -Milliseconds 200
+    Remove-Item -Recurse -LiteralPath $tempDirectory 
+    Pause
+    Exit
+}
 function Helper($paramname) {
 
     switch ( $paramname ) {
@@ -899,13 +874,6 @@ function Helper($paramname) {
             $contents = "disablesentry"
             $json = $webjson.others
         }
-        "DisabledLog" { 
-            # Disabled logging
-            $name = "patches.json.others."
-            $n = "xpui.js"
-            $contents = "disablelog"
-            $json = $webjson.others
-        }
         "Lyrics-color" { 
             $pasttext = $webjson.others.themelyrics.theme.$lyrics_stat.pasttext
             $current = $webjson.others.themelyrics.theme.$lyrics_stat.current
@@ -914,11 +882,11 @@ function Helper($paramname) {
             $hover = $webjson.others.themelyrics.theme.$lyrics_stat.hover
             $maxmatch = $webjson.others.themelyrics.theme.$lyrics_stat.maxmatch
 
-            if ($offline -lt "1.1.99.871") { $lyrics = "lyricscolor1"; $contents = $lyrics }
-            if ($offline -ge "1.1.99.871") { $lyrics = "lyricscolor2"; $contents = $lyrics }
+            if ([version]$offline -lt [version]"1.1.99.871") { $lyrics = "lyricscolor1"; $contents = $lyrics }
+            if ([version]$offline -ge [version]"1.1.99.871") { $lyrics = "lyricscolor2"; $contents = $lyrics }
 
             # xpui-routes-lyrics.js
-            if ($offline -ge "1.1.99.871") {
+            if ([version]$offline -ge [version]"1.1.99.871") {
                 $webjson.others.$lyrics.replace[1] = '$1' + '"' + $pasttext + '"'  
                 $webjson.others.$lyrics.replace[2] = '$1' + '"' + $current + '"'  
                 $webjson.others.$lyrics.replace[3] = '$1' + '"' + $next + '"'  
@@ -928,7 +896,7 @@ function Helper($paramname) {
             }
 
             # xpui-routes-lyrics.css
-            if ($offline -lt "1.1.99.871") {
+            if ([version]$offline -lt [version]"1.1.99.871") {
                 $webjson.others.$lyrics.replace[0] = '$1' + $pasttext
                 $webjson.others.$lyrics.replace[1] = '$1' + $current
                 $webjson.others.$lyrics.replace[2] = '$1' + $next
@@ -949,16 +917,120 @@ function Helper($paramname) {
         }
         "OffadsonFullscreen" { 
             # Full screen mode activation and removing "Upgrade to premium" menu, upgrade button, disabling a playlist sponsor
-            if ($bts) { $webjson.free.psobject.properties.remove('bilboard'), $webjson.free.psobject.properties.remove('audioads') }
             $name = "patches.json.free."
             $n = "xpui.js"
             $contents = $webjson.free.psobject.properties.name
             $json = $webjson.free
         }
+        "ForcedExp" {  
+            # Forced disable some exp (xpui.js)
+            $offline_patch = $offline -replace '(\d+\.\d+\.\d+)(.\d+)', '$1'
+            $remEnable = $webjson.others.EnableExp.psobject.properties  
+            $remCustom = $webjson.others.CustomExp.psobject.properties
+
+            if ($enhance_like_off) { $remEnable.remove('EnhanceLikedSongs') }
+            if ($enhance_playlist_off) { $remEnable.remove('EnhancePlaylist') }
+            # Old theme
+            if (!($new_theme)) {
+                $LeftSidebar = $webjson.others.EnableExp.LeftSidebar
+                $webjson.others.DisableExp | Add-Member -MemberType NoteProperty -Name "LeftSidebar" -Value $LeftSidebar
+
+                $remCustom.remove('NavAlt'), $remCustom.remove('NavAlt2'), $remEnable.remove('RightSidebarLyrics'), $remEnable.remove('RightSidebarCredits'), 
+                $remEnable.remove('RightSidebar'), $remEnable.remove('LeftSidebar'), $remEnable.remove('RightSidebarColors');
+            }
+            # New theme
+            else {
+                if (!($rightsidebarcolor)) { $remEnable.remove('RightSidebarColors') }
+                if ($old_lyrics) { $remEnable.remove('RightSidebarLyrics') } 
+            }
+            if (!$premium) { $remEnable.remove('RemoteDownloads') }
+
+            # Disable unimportant exp
+            if ($exp_spotify) {
+                $objects = @(
+                    @{
+                        Object           = $webjson.others.CustomExp.psobject.properties
+                        PropertiesToKeep = @('NavAlt', 'NavAlt2')
+                    },
+                    @{
+                        Object           = $webjson.others.EnableExp.psobject.properties
+                        PropertiesToKeep = @('RightSidebarColors', 'RightSidebarCredits', 'RightSidebarLyrics', 'RightSidebar', 'LeftSidebar', 'CarouselsOnHome')
+                    }
+                )
+
+                foreach ($obj in $objects) {
+                    $propertiesToRemove = $obj.Object.Name | Where-Object { $_ -notin $obj.PropertiesToKeep }
+                    $propertiesToRemove | ForEach-Object {
+                        $obj.Object.Remove($_)
+                    }
+                }
+
+            }
+
+            $Exp = ($webjson.others.EnableExp, $webjson.others.DisableExp, $webjson.others.CustomExp)
+
+            foreach ($item in $Exp) {
+                $itemProperties = $item | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
+            
+                foreach ($key in $itemProperties) {
+                    $version = $item.$key.version
+            
+                    if (!($version.to -eq "" -or [version]$version.to -ge [version]$offline_patch -and [version]$version.fr -le [version]$offline_patch)) {
+                        if ($item.PSObject.Properties.Name -contains $key) {
+                            $item.PSObject.Properties.Remove($key)
+                        }
+                    }
+                }
+            }
+
+            $enableExp = $webjson.others.EnableExp
+            $disableExp = $webjson.others.DisableExp
+            $CustomExp = $webjson.others.CustomExp
+
+            $enableNames = foreach ($item in $enableExp.PSObject.Properties.Name) {
+                $webjson.others.EnableExp.$item.name
+            }
+
+            $disableNames = foreach ($item in $disableExp.PSObject.Properties.Name) {
+                $webjson.others.DisableExp.$item.name
+            }
+
+            $customNames = foreach ($item in $CustomExp.PSObject.Properties.Name) {
+                $custname = $webjson.others.CustomExp.$item.name
+                $custvalue = $webjson.others.CustomExp.$item.value
+
+                # Create a string with the desired format
+                $objectString = "{name:'$custname',value:'$custvalue'}"
+                $objectString
+            }
+               
+            # Convert the strings of objects into a single text string
+            if ([string]::IsNullOrEmpty($customNames)) { $customTextVariable = '[]' }
+            else { $customTextVariable = "[" + ($customNames -join ',') + "]" }
+            if ([string]::IsNullOrEmpty($enableNames)) { $enableTextVariable = '[]' }
+            else { $enableTextVariable = "['" + ($enableNames -join "','") + "']" }
+            if ([string]::IsNullOrEmpty($disableNames)) { $disableTextVariable = '[]' }
+            else { $disableTextVariable = "['" + ($disableNames -join "','") + "']" }
+
+            $replacements = @(
+                @("EnableExp=[]", "EnableExp=$enableTextVariable"),
+                @("DisableExp=[]", "DisableExp=$disableTextVariable"),
+                @("CustomExp=[]", "CustomExp=$customTextVariable")
+            )
+
+            foreach ($replacement in $replacements) {
+                $webjson.others.ForcedExp.replace = $webjson.others.ForcedExp.replace.Replace($replacement[0], $replacement[1])
+            }
+
+            $name = "patches.json.others."
+            $n = "xpui.js"
+            $contents = "ForcedExp"
+            $json = $webjson.others
+        }
         "OffPodcasts" {  
             # Turn off podcasts
-            if ($offline -le "1.1.92.647") { $contents = "podcastsoff" }
-            if ($offline -ge "1.1.93.896") { $contents = "podcastsoff2" }
+            if ([version]$offline -le [version]"1.1.92.647") { $contents = "podcastsoff" }
+            if ([version]$offline -ge [version]"1.1.93.896") { $contents = "podcastsoff2" }
             $n = $js
             $name = "patches.json.others."
             $json = $webjson.others
@@ -970,18 +1042,25 @@ function Helper($paramname) {
             $contents = "adsectionsoff"
             $json = $webjson.others
         }
-        "OffRujs" { 
-            # Remove all languages except En and Ru from xpui.js
-            $name = "patches.json.others."
-            $n = "xpui.js"
-            $contents = "offrujs"
-            $json = $webjson.others
-        }
         "RuTranslate" { 
             # Additional translation of some words for the Russian language
             $n = "ru.json"
             $contents = $webjsonru.psobject.properties.name
             $json = $webjsonru
+        }
+        "PodcastAd" { 
+            # Aodcast ad block
+            $name = "patches.json.others."
+            $n = "Spotify.exe"
+            $contents = "podcast_ad_block"
+            $json = $webjson.others
+        }
+        "BlockUpdate" { 
+            # Block Spotify client updates
+            $name = "patches.json.others."
+            $n = "Spotify.exe"
+            $contents = "block_update"
+            $json = $webjson.others
         }
         "Collaborators" { 
             # Hide Collaborators icon
@@ -990,36 +1069,41 @@ function Helper($paramname) {
             $contents = "collaboration"
             $json = $webjson.others
         }
-        "Goofy-History" { 
-            # Accumulation of track listening history with Goofy
-            $name = "patches.json.others."
-            $n = "xpui.js"
-            $contents = "goofyhistory"
-            $webjson.others.$contents.replace = "`$1 const urlForm=" + '"' + $urlform_goofy + '"' + ";const idBox=" + '"' + $idbox_goofy + '"' + $webjson.others.$contents.replace
-            $json = $webjson.others
-        }
-        "ExpFeature" { 
-            # Experimental Feature
-            $rem = $webjson.exp.psobject.properties 
-            if ($enhance_like_off) { $rem.remove('enhanceliked') }
-            if ($enhance_playlist_off) { $rem.remove('enhanceplaylist') }
-            if ($new_artist_pages_off) { $rem.remove('disographyartist') }
-            if ($new_lyrics_off) { $rem.remove('lyricsmatch') }
-            if ($equalizer_off) { $rem.remove('equalizer') }
-            if (!($device_picker_old)) { $rem.remove('devicepickerold') }
-            if ($made_for_you_off) { $rem.remove('madeforyou') }
-            if ($exp_standart) {
-                $rem.remove('enhanceliked'), $rem.remove('enhanceplaylist'), $rem.remove('disographyartist'), $rem.remove('lyricsmatch'), 
-                $rem.remove('equalizer'), $rem.remove('devicepicker'), $rem.remove('newhome'), $rem.remove('newhome2'), $rem.remove('madeforyou'),
-                $rem.remove('similarplaylist'), $rem.remove('leftsidebar'), $rem.remove('rightsidebar'), $rem.remove('badbunny'), $rem.remove('devicelocal'),
-                $rem.remove('silencetrimmer'), $rem.remove('forgetdevice'), $rem.remove('speedpodcasts') , $rem.remove('showfollows')
-            }
-            if (!($new_theme)) { $rem.remove('newhome'), $rem.remove('newhome2'), $rem.remove('leftsidebar'), $rem.remove('rightsidebar'), $rem.remove('lyricssidebar') }
+        "VariousofXpui-js" { 
 
-            $name = "patches.json.exp."
+            $rem = $webjson.VariousJs.psobject.properties  
+
+            if ($urlform_goofy -and $idbox_goofy) {
+                $webjson.VariousJs.goofyhistory.replace = "`$1 const urlForm=" + '"' + $urlform_goofy + '"' + ";const idBox=" + '"' + $idbox_goofy + '"' + $webjson.VariousJs.goofyhistory.replace
+            }
+            else { $rem.remove('goofyhistory') }
+            
+            if (!($ru)) { $rem.remove('offrujs') }
+
+            if (!($premium) -or ($cache_limit)) {
+                if (!($premium)) { 
+                    $adds += $webjson.VariousJs.product_state.add
+                }
+
+                if ($cache_limit) { 
+        
+                    if ($cache_limit -lt 500) { $cache_limit = 500 }
+                    if ($cache_limit -gt 20000) { $cache_limit = 20000 }
+                        
+                    $adds2 = $webjson.VariousJs.product_state.add2
+                    if (!([string]::IsNullOrEmpty($adds))) { $adds2 = ',' + $adds2 }
+                    $adds += $adds2 -f $cache_limit
+
+                }
+                $repl = $webjson.VariousJs.product_state.replace
+                $webjson.VariousJs.product_state.replace = $repl -f "{pairs:{$adds}}"
+            }
+            else { $rem.remove('product_state') }
+
+            $name = "patches.json.VariousJs."
             $n = "xpui.js"
-            $contents = $webjson.exp.psobject.properties.name
-            $json = $webjson.exp
+            $contents = $webjson.VariousJs.psobject.properties.name
+            $json = $webjson.VariousJs
         }
     }
     $paramdata = $xpui
@@ -1028,10 +1112,10 @@ function Helper($paramname) {
 
     $contents | ForEach-Object { 
 
-        if ( $json.$PSItem.version.do ) { $do = $json.$PSItem.version.do -ge $offline_patch } else { $do = $true }
-        if ( $json.$PSItem.version.from ) { $from = $json.$PSItem.version.from -le $offline_patch } else { $from = $false }
-
-        $checkVer = $from -and $do; $translate = $paramname -eq "RuTranslate"
+        if ( $json.$PSItem.version.to ) { $to = [version]$json.$PSItem.version.to -ge [version]$offline_patch } else { $to = $true }
+        if ( $json.$PSItem.version.fr ) { $fr = [version]$json.$PSItem.version.fr -le [version]$offline_patch } else { $fr = $false }
+        
+        $checkVer = $fr -and $to; $translate = $paramname -eq "RuTranslate"
 
         if ($checkVer -or $translate) {
 
@@ -1072,12 +1156,12 @@ function Helper($paramname) {
     $paramdata
 }
 
-function extract ($counts, $method, $name, $helper, $add) {
+function extract ($counts, $method, $name, $helper, $add, $patch) {
     switch ( $counts ) {
         "one" { 
             if ($method -eq "zip") {
                 Add-Type -Assembly 'System.IO.Compression.FileSystem'
-                $xpui_spa_patch = "$env:APPDATA\Spotify\Apps\xpui.spa"
+                $xpui_spa_patch = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.spa'
                 $zip = [System.IO.Compression.ZipFile]::Open($xpui_spa_patch, 'update')   
                 $file = $zip.GetEntry($name)
                 $reader = New-Object System.IO.StreamReader($file.Open())
@@ -1099,7 +1183,7 @@ function extract ($counts, $method, $name, $helper, $add) {
         }
         "more" {  
             Add-Type -Assembly 'System.IO.Compression.FileSystem'
-            $xpui_spa_patch = "$env:APPDATA\Spotify\Apps\xpui.spa"
+            $xpui_spa_patch = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.spa'
             $zip = [System.IO.Compression.ZipFile]::Open($xpui_spa_patch, 'update') 
             $zip.Entries | Where-Object FullName -like $name | ForEach-Object {
                 $reader = New-Object System.IO.StreamReader($_.Open())
@@ -1113,195 +1197,67 @@ function extract ($counts, $method, $name, $helper, $add) {
             }
             $zip.Dispose()
         }
+        "exe" {
+            $ANSI = [Text.Encoding]::GetEncoding(1251)
+            $xpui = [IO.File]::ReadAllText($spotifyExecutable, $ANSI)
+            $xpui = Helper -paramname $helper
+            [IO.File]::WriteAllText($spotifyExecutable, $xpui, $ANSI)
+        }
     }
 }
 
 Write-Host ($lang).ModSpoti`n
 
-
-if (!($premium) -and $bts) {
-    $patchFiles = "$PWD\dpapi.dll", "$PWD\config.ini"
-    Copy-Item -LiteralPath $patchFiles -Destination "$spotifyDirectory"
-}
-else {
-    $ErrorActionPreference = 'SilentlyContinue' 
-    $test_bts = (Test-Path -Path "$spotifyDirectory\dpapi.dll") -or (Test-Path -Path "$spotifyDirectory\config.ini")
-    if ($test_bts) { Remove-Item "$spotifyDirectory\dpapi.dll", "$spotifyDirectory\config.ini" -Recurse -Force }
-}
 $tempDirectory = $PWD
 Pop-Location
 
 Start-Sleep -Milliseconds 200
 Remove-Item -Recurse -LiteralPath $tempDirectory 
 
-$xpui_spa_patch = "$env:APPDATA\Spotify\Apps\xpui.spa"
-$xpui_js_patch = "$env:APPDATA\Spotify\Apps\xpui\xpui.js"
-$xpui_css_patch = "$env:APPDATA\Spotify\Apps\xpui\xpui.css"
-$xpui_lic_patch = "$env:APPDATA\Spotify\Apps\xpui\licenses.html"
-if ($ru) { $xpui_ru_patch = "$env:APPDATA\Spotify\Apps\xpui\i18n\ru.json" }
+$xpui_spa_patch = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.spa'
+$xpui_js_patch = Join-Path (Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui') 'xpui.js'
 $test_spa = Test-Path -Path $xpui_spa_patch
 $test_js = Test-Path -Path $xpui_js_patch
-$xpui_js_bak_patch = "$env:APPDATA\Spotify\Apps\xpui\xpui.js.bak"
-$xpui_css_bak_patch = "$env:APPDATA\Spotify\Apps\xpui\xpui.css.bak"
-$xpui_lic_bak_patch = "$env:APPDATA\Spotify\Apps\xpui\licenses.html.bak"
-if ($ru) { $xpui_ru_bak_patch = "$env:APPDATA\Spotify\Apps\xpui\i18n\ru.json.bak" }
-$spotify_exe_bak_patch = "$env:APPDATA\Spotify\Spotify.bak"
+$spotify_exe_bak_patch = Join-Path $env:APPDATA 'Spotify\Spotify.bak'
 
 
 if ($test_spa -and $test_js) {
     Write-Host ($lang).Error -ForegroundColor Red
     Write-Host ($lang).FileLocBroken
-    Write-Host ($lang).StopScrpit
+    Write-Host ($lang).StopScript
     pause
     Exit
 }
 
 if ($test_js) {
-    Write-Host ($lang).Spicetify`n
-
-    # Delete all files except "en", "ru" and "__longest"
-    if ($ru) {
-        $patch_lang = "$env:APPDATA\Spotify\Apps\xpui\i18n"
-        Remove-Item $patch_lang -Exclude *en*, *ru*, *__longest* -Recurse
-    }
-
-    $reader = New-Object -TypeName System.IO.StreamReader -ArgumentList $xpui_js_patch
-    $xpui_test_js = $reader.ReadToEnd()
-    $reader.Close()
-        
-    If ($xpui_test_js -match 'patched by spotx') {
-
-        $test_xpui_js_bak = Test-Path -Path $xpui_js_bak_patch
-        $test_xpui_css_bak = Test-Path -Path $xpui_css_bak_patch
-        $test_xpui_lic_bak = Test-Path -Path $xpui_lic_bak_patch
-        if ($ru) { $test_xpui_ru_bak = Test-Path -Path $xpui_ru_bak_patch }
-        $test_spotify_exe_bak = Test-Path -Path $spotify_exe_bak_patch
-
-        if ($test_xpui_js_bak -and $test_xpui_css_bak) {
-            
-            Remove-Item $xpui_js_patch -Recurse -Force
-            Rename-Item $xpui_js_bak_patch $xpui_js_patch
-            
-            Remove-Item $xpui_css_patch -Recurse -Force
-            Rename-Item $xpui_css_bak_patch $xpui_css_patch
-            
-            if ($test_xpui_lic_bak) {
-                Remove-Item $xpui_lic_patch -Recurse -Force
-                Rename-Item $xpui_lic_bak_patch $xpui_lic_patch
-            }
-            if ($test_xpui_ru_bak -and $ru) {
-                Remove-Item $xpui_ru_patch -Recurse -Force
-                Rename-Item $xpui_ru_bak_patch $xpui_ru_patch
-            }
-            if ($test_spotify_exe_bak) {
-                Remove-Item $spotifyExecutable -Recurse -Force
-                Rename-Item $spotify_exe_bak_patch $spotifyExecutable
-            }
-
-        }
-        else {
-            Write-Host ($lang).NoRestore`n
-            Pause
-            Exit
-        }
-
-    }
-
-    Copy-Item $xpui_js_patch $xpui_js_bak_patch
-    Copy-Item $xpui_css_patch $xpui_css_bak_patch
-    Copy-Item $xpui_lic_patch $xpui_lic_bak_patch
-    if ($ru) { Copy-Item $xpui_ru_patch $xpui_ru_bak_patch }
-
     
-    # Full screen mode activation and removing "Upgrade to premium" menu, upgrade button, disabling a playlist sponsor
-    if (!($premium)) { extract -counts 'one' -method 'nonezip' -name 'xpui.js' -helper 'OffadsonFullscreen' }   
+    do {
+        $ch = Read-Host -Prompt ($lang).Spicetify
+        Write-Host ""
+        if (!($ch -eq 'n' -or $ch -eq 'y')) { incorrectValue }
+    }
+    while ($ch -notmatch '^y$|^n$')
 
-    # Experimental Feature
-    if (!($exp_spotify)) { extract -counts 'one' -method 'nonezip' -name 'xpui.js' -helper 'ExpFeature' }
-
-    # Remove all languages except En and Ru from xpui.js
-    if ($ru) { extract -counts 'one' -method 'nonezip' -name 'xpui.js' -helper 'OffRujs' -add $webjson.others.byspotx.add }
-
-    # Russian additional translation
-    if ($ru) {
-        extract -counts 'one' -method 'nonezip' -name 'i18n\ru.json' -helper 'RuTranslate'
+    if ($ch -eq 'y') { 
+        $Url = "https://telegra.ph/SpotX-FAQ-09-19#Can-I-use-SpotX-and-Spicetify-together?"
+        Start-Process $Url
     }
 
-    extract -counts 'one' -method 'nonezip' -name 'xpui-desktop-modals.js' -helper 'Discriptions'
-
-    # Hide Collaborators icon
-    if (!($hide_col_icon_off) -and !($exp_spotify)) {
-        extract -counts 'one' -method 'nonezip' -name 'xpui-routes-playlist.js' -helper 'Collaborators'
-    }
-
-    # Turn off podcasts
-    if ($Podcast_off) { 
-        if ($offline -ge "1.1.93.896" -and $offline -le "1.1.97.962") { $js = "home-v2.js" }
-        if ($offline -le "1.1.92.647" -or $offline -ge "1.1.98.683") { $js = "xpui.js" }
-        extract -counts 'one' -method 'nonezip' -name $js -helper 'OffPodcasts'
-    }
-
-    # Hiding Ad-like sections from the homepage
-    if ($adsections_off) { 
-        if ($offline -ge "1.1.93.896" -and $offline -le "1.1.97.962") { $js = 'home-v2.js' }
-        if ($offline -ge "1.1.98.683") { $js = 'xpui.js' }
-        extract -counts 'one' -method 'nonezip' -name $js -helper 'OffAdSections'
-    }
-
-    # Accumulation of track listening history with Goofy
-    if ($urlform_goofy -and $idbox_goofy -and $offline -ge "1.1.90.859") { 
-        extract -counts 'one' -method 'nonezip' -name 'xpui.js' -helper 'Goofy-History'
-    }
-    
-    # Static color for lyrics
-    if ($lyrics_stat) {
-        if ($offline -lt "1.1.99.871") { 
-            $name_file = 'xpui-routes-lyrics.css'
-            extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
-        }
-        if ($offline -ge "1.1.99.871" -and $offline -le "1.2.2.582") {
-            $contents = "fixcsslyricscolor2"
-            extract -counts 'one' -method 'nonezip' -name 'xpui.css' -helper 'FixCss'
-            $name_file = 'xpui-routes-lyrics.js' 
-            extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'  
-        }
-        # mini lyrics
-        if ($offline -ge "1.2.0.1155") {
-            $name_file = 'xpui.js'   
-            extract -counts 'one' -method 'nonezip' -name $name_file -helper 'Lyrics-color'
-        }
-    }
-    
-    # xpui.css
-    if (!($premium)) {
-        # Hide download icon on different pages
-        $css += $webjson.others.downloadicon.add
-        # Hide submenu item "download"
-        $css += $webjson.others.submenudownload.add
-        # Hide very high quality streaming
-        $css += $webjson.others.veryhighstream.add
-    }
-    if ($new_theme -and $offline -ge "1.2.3.1107") {
-        $css += $webjson.others.navaltfix.add[3]
-        $css += $webjson.others.navaltfix.add[4]
-    }
-    if ($null -ne $css ) { extract -counts 'one' -method 'nonezip' -name 'xpui.css' -add $css }
-    
-
-    # licenses.html minification
-    extract -counts 'one' -method 'nonezip' -name 'licenses.html' -helper 'HtmlLicMin'
+    Write-Host ($lang).StopScript
+    Pause
+    Exit
 }  
 
 if (!($test_js) -and !($test_spa)) { 
     Write-Host "xpui.spa not found, reinstall Spotify"
-    Write-Host ($lang).StopScrpit
+    Write-Host ($lang).StopScript
     Pause
     Exit
 }
 
 If ($test_spa) {
 
-    $bak_spa = "$env:APPDATA\Spotify\Apps\xpui.bak"
+    $bak_spa = Join-Path (Join-Path $env:APPDATA 'Spotify\Apps') 'xpui.bak'
     $test_bak_spa = Test-Path -Path $bak_spa
 
     # Make a backup copy of xpui.spa if it is original
@@ -1319,7 +1275,7 @@ If ($test_spa) {
             Remove-Item $xpui_spa_patch -Recurse -Force
             Rename-Item $bak_spa $xpui_spa_patch
 
-            $spotify_exe_bak_patch = "$env:APPDATA\Spotify\Spotify.bak"
+            $spotify_exe_bak_patch = Join-Path $env:APPDATA 'Spotify\Spotify.bak'
             $test_spotify_exe_bak = Test-Path -Path $spotify_exe_bak_patch
             if ($test_spotify_exe_bak) {
                 Remove-Item $spotifyExecutable -Recurse -Force
@@ -1327,11 +1283,11 @@ If ($test_spa) {
             }
         }
         else {
-            Write-Host ($lang).NoRestore2`n
+            Write-Host ($lang).NoRestore`n
             Pause
             Exit
         }
-        $spotify_exe_bak_patch = "$env:APPDATA\Spotify\Spotify.bak"
+        $spotify_exe_bak_patch = Join-Path $env:APPDATA 'Spotify\Spotify.bak'
         $test_spotify_exe_bak = Test-Path -Path $spotify_exe_bak_patch
         if ($test_spotify_exe_bak) {
             Remove-Item $spotifyExecutable -Recurse -Force
@@ -1359,33 +1315,25 @@ If ($test_spa) {
     if (!($premium)) {
         extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'OffadsonFullscreen'
     }
+
+    # Forced disable some exp
+    extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'ForcedExp' -add $webjson.others.byspotx.add
     
     # Experimental Feature
-    if (!($exp_spotify)) { extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'ExpFeature' }
-
-    # Remove all languages except En and Ru from xpui.js
-    if ($ru) { extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'OffRujs' }
-
-    # Disabled logging
-    extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'DisabledLog' -add $webjson.others.byspotx.add
+    extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'VariousofXpui-js' 
 
     # Turn off podcasts
     if ($podcast_off) { 
-        if ($offline -ge "1.1.93.896" -and $offline -le "1.1.97.962") { $js = 'home-v2.js' }
-        if ($offline -le "1.1.92.647" -or $offline -ge "1.1.98.683") { $js = 'xpui.js' }
+        if ([version]$offline -ge [version]"1.1.93.896" -and [version]$offline -le [version]"1.1.97.962") { $js = 'home-v2.js' }
+        if ([version]$offline -le [version]"1.1.92.647" -or [version]$offline -ge [version]"1.1.98.683") { $js = 'xpui.js' }
         extract -counts 'one' -method 'zip' -name $js -helper 'OffPodcasts'
     }
 
     # Hiding Ad-like sections from the homepage
     if ($adsections_off) { 
-        if ($offline -ge "1.1.93.896" -and $offline -le "1.1.97.962") { $js = 'home-v2.js' }
-        if ($offline -ge "1.1.98.683") { $js = 'xpui.js' }
+        if ([version]$offline -ge [version]"1.1.93.896" -and [version]$offline -le [version]"1.1.97.962") { $js = 'home-v2.js' }
+        if ([version]$offline -ge [version]"1.1.98.683") { $js = 'xpui.js' }
         extract -counts 'one' -method 'zip' -name $js -helper 'OffAdSections'
-    }
-
-    # Accumulation of track listening history with Goofy
-    if ($urlform_goofy -and $idbox_goofy -and $offline -ge "1.1.90.859") { 
-        extract -counts 'one' -method 'zip' -name 'xpui.js' -helper 'Goofy-History'
     }
 
     # Hide Collaborators icon
@@ -1397,19 +1345,21 @@ If ($test_spa) {
     # Static color for lyrics
     if ($lyrics_stat) {
         # old
-        if ($offline -lt "1.1.99.871") { 
+        if ([version]$offline -lt [version]"1.1.99.871") { 
             $name_file = 'xpui-routes-lyrics.css'
             extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
         }
         # new 
-        if ($offline -ge "1.1.99.871" -and $offline -le "1.2.2.582") {
+        if ([version]$offline -ge [version]"1.1.99.871") {
             $contents = "fixcsslyricscolor2"
             extract -counts 'one' -method 'zip' -name 'xpui.css' -helper 'FixCss'
-            $name_file = 'xpui-routes-lyrics.js'   
-            extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
+            if ([version]$offline -le [version]"1.2.2.582") {
+                $name_file = 'xpui-routes-lyrics.js'   
+                extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
+            }
         }
         # mini lyrics
-        if ($offline -ge "1.2.0.1155") {
+        if ([version]$offline -ge [version]"1.2.0.1155") {
             $name_file = 'xpui.js'   
             extract -counts 'one' -method 'zip' -name $name_file -helper 'Lyrics-color'
         }
@@ -1436,37 +1386,33 @@ If ($test_spa) {
         }
 
         # New UI fix
-        if ($new_theme) {
-            if ($offline -ge "1.1.94.864" -and $offline -lt "1.2.3.1107") {
+        if ([version]$offline -ge [version]"1.1.94.864" -and $new_theme) {
+            if ([version]$offline -lt [version]"1.2.3.1107") {
                 $css += $webjson.others.navaltfix.add[0]
             }
-            if ($offline -ge "1.2.3.1107") {
+            if ([version]$offline -ge [version]"1.2.3.1107") {
                 $css += $webjson.others.navaltfix.add[1]
-                $css += $webjson.others.navaltfix.add[3]
-                $css += $webjson.others.navaltfix.add[4]
+            }
+            if ([version]$offline -ge [version]"1.2.6.861" -and [version]$offline -le [version]"1.2.6.863") {
+                $css += $webjson.others.leftsidebarfix.add
             }
             $css += $webjson.others.navaltfix.add[2]
+            $css += $webjson.others.navaltfix.add[3]
+            $css += $webjson.others.navaltfix.add[4]
         }
         if ($null -ne $css ) { extract -counts 'one' -method 'zip' -name 'xpui.css' -add $css }
-        
     }
     
     # Old UI fix
     $contents = "fix-old-theme"
     extract -counts 'one' -method 'zip' -name 'xpui.css' -helper "FixCss"
 
-    # Fix scroll bug navylx
-    if ($offline -ge "1.2.4.893") {
-        $contents = "fix-scroll-bug-navylx"
-        extract -counts 'one' -method 'zip' -name 'xpui.css' -helper "FixCss"
-    }
-
     # Remove RTL and minification of all *.css
     extract -counts 'more' -name '*.css' -helper 'RemovertlCssmin'
     
     # licenses.html minification
-    extract -counts 'one' -method 'zip' -name 'licenses.html' -helper 'HtmlLicMin'
 
+    extract -counts 'one' -method 'zip' -name 'licenses.html' -helper 'HtmlLicMin'
     # blank.html minification
     extract -counts 'one' -method 'zip' -name 'blank.html' -helper 'HtmlBlank'
     
@@ -1492,7 +1438,7 @@ if (!($no_shortcut)) {
     $desktop_folder = DesktopFolder
 
     If (!(Test-Path $desktop_folder\Spotify.lnk)) {
-        $source = "$env:APPDATA\Spotify\Spotify.exe"
+        $source = Join-Path $env:APPDATA 'Spotify\Spotify.exe'
         $target = "$desktop_folder\Spotify.lnk"
         $WorkingDir = "$env:APPDATA\Spotify"
         $WshShell = New-Object -comObject WScript.Shell
@@ -1505,7 +1451,7 @@ if (!($no_shortcut)) {
 
 # Create shortcut in start menu
 If (!(Test-Path $start_menu)) {
-    $source = "$env:APPDATA\Spotify\Spotify.exe"
+    $source = Join-Path $env:APPDATA 'Spotify\Spotify.exe'
     $target = $start_menu
     $WorkingDir = "$env:APPDATA\Spotify"
     $WshShell = New-Object -comObject WScript.Shell
@@ -1515,97 +1461,28 @@ If (!(Test-Path $start_menu)) {
     $Shortcut.Save()      
 }
 
+$ANSI = [Text.Encoding]::GetEncoding(1251)
+$old = [IO.File]::ReadAllText($spotifyExecutable, $ANSI)
+
+$rexex1 = $old -notmatch $webjson.others.block_update.add
+$rexex2 = $old -notmatch $webjson.others.podcast_ad_block.add
+
+if ($rexex1 -and $rexex2 ) {
+
+    if (Test-Path -LiteralPath $exe_bak) { 
+        Remove-Item $exe_bak -Recurse -Force
+        Start-Sleep -Milliseconds 150
+    }
+    copy-Item $spotifyExecutable $exe_bak
+}
+
+# Podcast ad block
+extract -counts 'exe' -helper 'PodcastAd'
+
 # Block updates
-$ErrorActionPreference = 'SilentlyContinue'
-$update_test_exe = Test-Path -Path $spotifyExecutable
+if ($block_update) { extract -counts 'exe' -helper 'BlockUpdate' }
 
-if ($block_update) {
-
-    if ($update_test_exe) {
-        $exe = "$env:APPDATA\Spotify\Spotify.exe"
-        $ANSI = [Text.Encoding]::GetEncoding(1251)
-        $old = [IO.File]::ReadAllText($exe, $ANSI)
-
-        if ($old -match "(?<=wg:\/\/desktop-update\/.)7(\/update)") {
-            Write-Host ($lang).UpdateBlocked`n
-        }
-        elseif ($old -match "(?<=wg:\/\/desktop-update\/.)2(\/update)") {
-            if (Test-Path -LiteralPath $exe_bak) { 
-                Remove-Item $exe_bak -Recurse -Force
-                Start-Sleep -Milliseconds 150
-            }
-            copy-Item $exe $exe_bak
-            $new = $old -replace "(?<=wg:\/\/desktop-update\/.)2(\/update)", '7/update'
-            [IO.File]::WriteAllText($exe, $new, $ANSI)
-        }
-        else {
-            Write-Host ($lang).UpdateError`n -ForegroundColor Red
-        }
-    }
-    else {
-        Write-Host ($lang).NoSpotifyExe`n -ForegroundColor Red 
-    }
-}
-
-# Automatic cache clearing
-if ($cache_install) {
-    Start-Sleep -Milliseconds 200
-    New-Item -Path $env:APPDATA\Spotify\ -Name "cache" -ItemType "directory" | Out-Null
-
-    # Download cache script
-    downloadScripts -param1 "cache-spotify"
-    downloadScripts -param1 "hide_window"
-    downloadScripts -param1 "run_ps"
-
-
-    # Create a desktop shortcut
-    if (!($no_shortcut)) {
-        $source2 = "$cache_folder\hide_window.vbs"
-        $target2 = "$desktop_folder\Spotify.lnk"
-        $WorkingDir2 = "$cache_folder"
-        $WshShell2 = New-Object -comObject WScript.Shell
-        $Shortcut2 = $WshShell2.CreateShortcut($target2)
-        $Shortcut2.WorkingDirectory = $WorkingDir2
-        $Shortcut2.IconLocation = "$env:APPDATA\Spotify\Spotify.exe"
-        $Shortcut2.TargetPath = $source2
-        $Shortcut2.Save()
-    }
-    # Create shortcut in start menu
-    $source2 = "$cache_folder\hide_window.vbs"
-    $target2 = $start_menu
-    $WorkingDir2 = "$cache_folder"
-    $WshShell2 = New-Object -comObject WScript.Shell
-    $Shortcut2 = $WshShell2.CreateShortcut($target2)
-    $Shortcut2.WorkingDirectory = $WorkingDir2
-    $Shortcut2.IconLocation = "$env:APPDATA\Spotify\Spotify.exe"
-    $Shortcut2.TargetPath = $source2
-    $Shortcut2.Save()
-
-    if ($number_days -match "^[1-9][0-9]?$|^100$") {
-        $file_cache_spotify_ps1 = Get-Content $cache_folder\cache_spotify.ps1 -Raw
-        $new_file_cache_spotify_ps1 = $file_cache_spotify_ps1 -replace '7', $number_days
-        Set-Content -Path $cache_folder\cache_spotify.ps1 -Force -Value $new_file_cache_spotify_ps1
-        $contentcache_spotify_ps1 = [System.IO.File]::ReadAllText("$cache_folder\cache_spotify.ps1")
-        $contentcache_spotify_ps1 = $contentcache_spotify_ps1.Trim()
-        [System.IO.File]::WriteAllText("$cache_folder\cache_spotify.ps1", $contentcache_spotify_ps1)
-
-        $infile = "$cache_folder\cache_spotify.ps1"
-        $outfile = "$cache_folder\cache_spotify2.ps1"
-
-        $sr = New-Object System.IO.StreamReader($infile) 
-        $sw = New-Object System.IO.StreamWriter($outfile, $false, [System.Text.Encoding]::Default)
-        $sw.Write($sr.ReadToEnd())
-        $sw.Close()
-        $sr.Close() 
-        $sw.Dispose()
-        $sr.Dispose()
-
-        Start-Sleep -Milliseconds 200
-        Remove-item $infile -Recurse -Force
-        Rename-Item -path $outfile -NewName $infile
-    }
-}
-
+# Start Spotify
 if ($start_spoti) { Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable }
 
 Write-Host ($lang).InstallComplete`n -ForegroundColor Green

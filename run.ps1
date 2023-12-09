@@ -276,7 +276,7 @@ if ($psv -ge 7) {
 
 function CallLang($clg) {
 
-    $urlLang = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/scripts/installer-lang/$clg.ps1"
+    $urlLang = "https://raw.githubusercontent.com/chill-music/Hurricane-SpotX/tree/main/scripts/installer-lang/$clg.ps1"
     $ProgressPreference = 'SilentlyContinue'
     
     try {
